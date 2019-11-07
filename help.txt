@@ -1,6 +1,6 @@
-time_manager.py -- Usage:
+time_manager -- Usage:
 
-./time_manager.py NAME START/STOP/UNDO/VIEW [N]
+time_manager NAME START/STOP/UNDO/VIEW [N]
 
 Where NAME is the name of the person checking in
 and START/STOP/UNDO is the word 'start', 'undo',
