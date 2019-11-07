@@ -13,8 +13,16 @@ Check out help.txt for help.
 
 ## Installation
 
-In your home directory, clone this repo into it with a directory name of
-`time_manager`. Then, in your `.bashrc` or `.bash_profile`, create an alias
-like so: `alias time_manager="~/time_manager/time_manager.py"`.
-Then after that alias is loaded, you can call the `time_manager` program with
-the name of your alias from anywhere.
+In your home directory, clone this repo into it like so:
+```
+$ cd ~
+$ git clone https://github.com/johnisom/time_manager.git
+```
+Then, in your `.bashrc` or `.bash_profile`, create an alias
+like so:
+```
+# .bashrc or .bash_profile
+alias time_manager="~/time_manager/time_manager.py"
+```
+Then after that alias is loaded (ex. `$ source .bashrc`), you can call the
+`time_manager` program from anywhere.
