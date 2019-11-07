@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 import sys
 import os
@@ -8,8 +8,8 @@ from datetime import datetime as dt
 
 os.chdir(os.environ['HOME'] + '/time_manager')
 
-SEC_IN_DAY = 86400
-
+SEC_IN_DAY = 86_400
+SEC_IN_HOUR = 3_600
 
 def run(name, command, timeframe=None):
     '''Run main program'''
@@ -79,6 +79,7 @@ def view(timeframe):
     # otherwise only data for the past [timeframe] days.
     if timeframe is None:
         timeframe = (int(lines[-1][0]) - int(lines[0][0])) / SEC_IN_DAY
+
     timeframe = int(timeframe)
     if timeframe == 0:
         timeframe = 1
@@ -89,17 +90,16 @@ def view(timeframe):
             if int(line[0]) >= min_seconds]  # selects in timeframe
 
     diffs = [stop - start for start, stop in data]
-    avg_secs_per_day = sum(diffs) / timeframe
+    avg_hrs_per_day = float(sum(diffs)) / timeframe / SEC_IN_HOUR
     for start, stop in data:
-        print 'Started: {}'.format(to_datetime(start))
-        print 'Stopped: {}\n'.format(to_datetime(stop))
-    print 'You studied an average of {:.2f} hours per day '\
-          'for the past {} day(s).'.format(
-              avg_secs_per_day / 60.0 / 60, timeframe)
+        print(f'Started: {to_datetime(start)}')
+        print(f'Stopped: {to_datetime(stop)}\n')
+    print(f'You studied an average of {avg_hrs_per_day:.2f} hours per day '\
+          f'for the past {timeframe} day(s).')
 
 
 def to_datetime(sec):
-    '''Convert total seconds to frieldy strftime datetime format'''
+    '''Convert total seconds to friendly strftime datetime format'''
     strf_pattern = '%A, %b %d, %Y @ %H:%M:%S'
     return dt.fromtimestamp(sec).strftime(strf_pattern)
 
@@ -107,7 +107,7 @@ def to_datetime(sec):
 def display_help():
     '''Output help.txt to the console'''
     with open('help.txt') as f:
-        print f.read()
+        print(f.read())
 
 
 def is_help(arg):
