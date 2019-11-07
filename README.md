@@ -8,7 +8,8 @@ This will need mega refactoring, but so far, stores timestamps in
 a csv file when you run the start and stop commands. When you run
 the view command, it converts those to nice-to-read date-time formats
 and gives you an average of how many hours you studied for the past
-N days. Check out help.txt for help.
+N days.  
+Check out help.txt for help.
 
 ## Installation
 
