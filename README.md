@@ -18,11 +18,10 @@ In your home directory, clone this repo into it like so:
 $ cd ~
 $ git clone https://github.com/johnisom/time_manager.git
 ```
-Then, in your `.bashrc` or `.bash_profile`, create an alias
+Then, in your `~/.bashrc` or `~/.bash_profile`, create an alias
 like so:
 ```
-# .bashrc or .bash_profile
 alias time_manager="~/time_manager/time_manager.py"
 ```
-Then after that alias is loaded (ex. `$ source .bashrc`), you can call the
+Then after that alias is loaded (ex. `$ source ~/.bashrc`), you can call the
 `time_manager` program from anywhere.
