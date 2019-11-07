@@ -1,0 +1,171 @@
+#!/usr/bin/python
+
+import sys
+import os
+import time
+from datetime import datetime as dt
+
+
+os.chdir(os.environ['HOME'] + '/time_manager')
+
+SEC_IN_DAY = 86400
+
+
+def run(name, command, timeframe=None):
+    '''Run main program'''
+    # checks to see if the directory 'name' exists,
+    # and if it doesn't (your first time using this
+    # program), it creates the dir and your data file
+    if not os.path.isdir(name):
+        os.mkdir(name)
+        with open(name + '/data.csv', 'w') as f:
+            f.write('START,STOP\n')
+
+    os.chdir(name)
+
+    if command == 'START':
+        start()
+    elif command == 'STOP':
+        stop()
+    elif command == 'UNDO':
+        undo()
+    elif command == 'VIEW':
+        view(timeframe)
+
+
+def start():
+    '''Add start time'''
+    with open('data.csv', 'a') as f:
+        f.write(str(int(time.time())) + ',')
+
+
+def stop():
+    '''Add stop time'''
+    with open('data.csv', 'a') as f:
+        f.write(str(int(time.time())) + '\n')
+
+
+def undo():
+    '''Delete last start/stop time added'''
+    with open('data.csv') as f:
+        lines = f.readlines()
+    # if the last character of the last line is '\n', then
+    # a stop time was the last time added.
+    if lines[-1][-1] == '\n':
+        # lines[:-1] is list of all lines except last
+        # lines[-1].split(',')[0] is start time of last line
+        # This takes all lines but last and appends the start time
+        # of the last to it.
+        data = lines[:-1] + [lines[-1].split(',')[0] + ',']
+
+    # if the last character of the last line is ',', then
+    # a start time was the last time added
+    elif lines[-1][-1] == ',':
+        # Takes all lines but last, which is everything but the latest entry.
+        data = lines[:-1]
+
+    # rewrite data.csv with all the previous data except the
+    # last start/stop time
+    with open('data.csv', 'w') as f:
+        for line in data:
+            f.write(line)
+
+
+def view(timeframe):
+    '''Output data and summaries for logged time'''
+    with open('data.csv') as f:
+        lines = [line.strip().split(',') for line in f.readlines()[1:]]
+    # show everything if timeframe was not specified,
+    # otherwise only data for the past [timeframe] days.
+    if timeframe is None:
+        timeframe = (int(lines[-1][0]) - int(lines[0][0])) / SEC_IN_DAY
+    timeframe = int(timeframe)
+    if timeframe == 0:
+        timeframe = 1
+    timeframe_seconds = SEC_IN_DAY * timeframe
+    min_seconds = int(time.time()) - timeframe_seconds
+    data = [[int(sec) for sec in line]  # maps ['start', 'stop'] to ints
+            for line in lines
+            if int(line[0]) >= min_seconds]  # selects in timeframe
+
+    diffs = [stop - start for start, stop in data]
+    avg_secs_per_day = sum(diffs) / timeframe
+    for start, stop in data:
+        print 'Started: {}'.format(to_datetime(start))
+        print 'Stopped: {}\n'.format(to_datetime(stop))
+    print 'You studied an average of {:.2f} hours per day '\
+          'for the past {} day(s).'.format(
+              avg_secs_per_day / 60.0 / 60, timeframe)
+
+
+def to_datetime(sec):
+    '''Convert total seconds to frieldy strftime datetime format'''
+    strf_pattern = '%A, %b %d, %Y @ %H:%M:%S'
+    return dt.fromtimestamp(sec).strftime(strf_pattern)
+
+
+def display_help():
+    '''Output help.txt to the console'''
+    with open('help.txt') as f:
+        print f.read()
+
+
+def is_help(arg):
+    '''Check if command supplied is a help command'''
+    return (arg == 'HELP' or
+            arg == '-H' or
+            arg == '--HELP')
+
+
+def is_view(args):
+    '''Check if command supplied is a view command'''
+    return len(args) >= 2 and args[1] == 'VIEW'
+
+
+def is_all_alpha(name):
+    '''Check if name supplied is only made of letters'''
+    return all([char.isalpha() for char in name])
+
+
+def is_invalid_command(command):
+    '''Check if command is none of the valid 4 commands'''
+    return (command != 'START' and
+            command != 'STOP' and
+            command != 'UNDO' and
+            command != 'VIEW')
+
+
+def is_valid(args):
+    '''Check if format of arguments is correct as specified in help.txt'''
+    # if the command is VIEW and it has a total of 2 or 3
+    # args ({name, view, [n]}), then its a valid command
+    if is_view(args) and (len(args) == 3 or len(args) == 2):
+        return True
+
+    # if less than or more than 2 arguments supplied
+    # (ex. {JOHN} or {JOHN START EXTRA_ARG}), then the command
+    # does not follow proper format
+    elif len(args) != 2:
+        return False
+
+    # if the command is not one of the supported 4, then it is invalid
+    elif is_invalid_command(args[1]):
+        return False
+
+    # if the name has anything other than letters, it's invalid
+    elif not is_all_alpha(args[0]):
+        return False
+    else:
+        return True
+
+
+if __name__ == "__main__":
+    # gets the arguments passed in when run as a script/command
+    # (ex. ./time_manager.py NAME START/STOP/UNDO/VIEW [N])
+    args = [arg.upper() for arg in sys.argv[1:]]
+
+    # checks whether to display help or to run the script
+    if not is_valid(args) or is_help(args[0]):
+        display_help()
+    else:
+        run(*args)

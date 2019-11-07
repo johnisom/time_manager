@@ -1,0 +1,27 @@
+time_manager.py -- Usage:
+
+./time_manager.py NAME START/STOP/UNDO/VIEW [N]
+
+Where NAME is the name of the person checking in
+and START/STOP/UNDO is the word 'start', 'undo',
+'view', or 'stop' (uppercase or lowercase, it
+doesn't matter as this program is case insensitive).
+
+START:
+  You use this command once you have started studying.
+
+STOP:
+  You use this command once you have stopped studying.
+
+UNDO:
+  You use this command to undo a previous START or STOP.
+
+VIEW:
+  You use this command to view the times and stats of
+  your logged time.
+
+  N (INTEGER -> DAYS):
+    Optional integer argument that can be used in
+    combination with the VIEW command. It uses the past
+    N days in its display of times and stats if supplied,
+    otherwise it shows the times and stats for all time.
