@@ -25,7 +25,7 @@ def run(name, command, timeframe=None):
     # checks to see if the data.csv file exists,
     # and if it doesn't, it creates the file
     if not os.path.isfile('data.csv'):
-        with open('/data.csv', 'w') as f:
+        with open('data.csv', 'w') as f:
             f.write('START,STOP\n')
 
     if command == 'START':
@@ -54,27 +54,27 @@ def undo():
     '''Delete last start/stop time added'''
     with open('data.csv') as f:
         lines = f.readlines()
-    # if the last character of the last line is '\n', then
-    # a stop time was the last time added.
-    if lines[-1][-1] == '\n':
-        # lines[:-1] is list of all lines except last
-        # lines[-1].split(',')[0] is start time of last line
-        # This takes all lines but last and appends the start time
-        # of the last to it.
-        data = lines[:-1] + [lines[-1].split(',')[0] + ',']
 
-    # if the last character of the last line is ',', then
-    # a start time was the last time added
-    elif lines[-1][-1] == ',':
-        # Takes all lines but last, which is everything but the latest entry.
-        data = lines[:-1]
+    data = lines[:-1]
+    last_line = lines[-1]
 
-    # rewrite data.csv with all the previous data except the
-    # last start/stop time
+    if last_stop(last_line):
+        # last_line.split(',')[0] is start time of last_line
+        data.append(last_line.split(',')[0] + ',')
+
+    # rewrite data.csv with all the previous data
+    # except the last start/stop time
     with open('data.csv', 'w') as f:
         for line in data:
             f.write(line)
 
+def last_stop(line):
+    '''Determine if last time added to line was a stop time'''
+    return line[-1] == '\n'
+
+def last_start(line):
+    '''Determine if last time added to line was a start time'''
+    return line[-1] == ','
 
 def view(timeframe):
     '''Output data and summaries for logged time'''
