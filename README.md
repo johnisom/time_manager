@@ -46,6 +46,8 @@ Also, if you dont have the path `/usr/bin/python3`, update the shebang at the to
 
 ## TODOS
 
+* Allow `VIEW` if currently in session. Will probably say 'Currently: ' instead
+  of 'Stopped: ' and show timestamp with no message.
 * ~~Add docstrings to all functions without them~~
 * Create longer, better, and more descriptive docstrings for all functions
 * ~~Clean up all functions~~
