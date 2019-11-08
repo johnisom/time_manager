@@ -185,7 +185,7 @@ def is_all_alpha(name):
 def is_valid(args):
     '''Check if format of arguments is correct as specified in help.txt'''
 
-    return (is_start(args) or is_stop(args) or is_view(args) or is_undo(args)) and is_all_alpha(args[0]):
+    return (is_start(args) or is_stop(args) or is_view(args) or is_undo(args)) and is_all_alpha(args[0])
 
 
 if __name__ == "__main__":
