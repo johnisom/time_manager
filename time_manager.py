@@ -64,6 +64,7 @@ def run(name: str, command: str, *args: List[str]) -> None:
 
 
 def sanitize(text: str) -> str:
+    '''Replace forbidden character sequences'''
     for forbidden in FORBIDDEN:
         text = text.replace(forbidden, DELIM_REPLACEMENT)
     return text
@@ -138,7 +139,7 @@ def view(timeframe: Union[str, None]) -> None:
 
 
 def display_lines(lines: List[List[List[str]]], times: List[List[dt]]) -> None:
-    ''''''
+    '''Display start times, stop times, messages, and session times'''
     for idx, (start, stop) in enumerate(lines):
         start_message = start[1]
         stop_message = stop[1]
@@ -155,7 +156,7 @@ def display_lines(lines: List[List[List[str]]], times: List[List[dt]]) -> None:
 
 def display(title: str, total_seconds: int,
             trailer: Optional[str] = '') -> None:
-    ''''''
+    '''Display line of time'''
     secs = total_seconds % SEC_IN_MIN
     mins = total_seconds // SEC_IN_MIN % SEC_IN_MIN
     hours = total_seconds // SEC_IN_HOUR % SEC_IN_MIN
@@ -163,18 +164,18 @@ def display(title: str, total_seconds: int,
 
 
 def to_dt(string: str) -> dt:
-    ''''''
+    '''Convert str to dt'''
     return dt.strptime(string, TIME_FORMAT_PATTERN)
 
 
 def readlines() -> List[str]:
-    ''''''
+    '''Get data from data storage'''
     with open(FILE_DEST) as f:
         return f.readlines()
 
 
 def write(lines: List[str]) -> None:
-    ''''''
+    '''Write data to data storage'''
     with open(FILE_DEST, 'w') as f:
         for line in lines:
             f.write(line)
