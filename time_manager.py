@@ -147,8 +147,8 @@ def display_lines(lines, times):
 def display(title, total_seconds, trailer=''):
     ''''''
     secs = total_seconds % SEC_IN_MIN
-    mins = total_seconds // SEC_IN_MIN
-    hours = total_seconds // SEC_IN_HOUR
+    mins = total_seconds // SEC_IN_MIN % SEC_IN_MIN
+    hours = total_seconds // SEC_IN_HOUR % SEC_IN_MIN
     print(f'{title}: {hours:02}:{mins:02}:{secs:02}{trailer}')
 
 
