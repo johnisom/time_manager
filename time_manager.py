@@ -17,6 +17,7 @@ TIME_FORMAT_PATTERN = '%a %Y-%m-%d %H:%M:%S'
 FILE_DEST = 'data.psv'
 
 DELIMETER = '|'
+DELIM_REPLACEMENT = '^'
 EOL = '\n'
 
 
@@ -54,6 +55,8 @@ def run(name, command, *args):
 
 def start(message):
     '''Add start time'''
+    if message is not None:
+        message = message.replace(DELIMETER, DELIM_REPLACEMENT)
     with open(FILE_DEST) as f:
         assert last_stop(f.readlines()[-1]), "Cannot 'start' twice in a row!"
     with open(FILE_DEST, 'a') as f:
@@ -62,6 +65,8 @@ def start(message):
 
 def stop(message):
     '''Add stop time'''
+    if message is not None:
+        message = message.replace(DELIMETER, DELIM_REPLACEMENT)
     with open(FILE_DEST) as f:
         assert last_start(f.readlines()[-1]), "Cannot 'stop' twice in a row!"
     with open(FILE_DEST, 'a') as f:
