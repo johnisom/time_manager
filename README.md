@@ -29,6 +29,12 @@ like so:
 alias time_manager="~/time_manager/time_manager.py"
 ```
 
+This is also acceptable:
+
+```bash
+alias tm="~/time_manager/time_manager.py"
+```
+
 Then after that alias is loaded (ex. `$ source ~/.bashrc`), you can call the
 `time_manager` program from anywhere.
 
