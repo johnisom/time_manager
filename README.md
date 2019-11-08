@@ -30,13 +30,19 @@ alias time_manager="~/time_manager/time_manager.py"
 Then after that alias is loaded (ex. `$ source ~/.bashrc`), you can call the
 `time_manager` program from anywhere.
 
+### Dependencies
+
+This relies on python 3.6 or greater (uses f-strings), so make sure you have that installed.
+Also, if you dont have the path `/usr/bin/python3`, update the shebang at the top of
+`~/time_manager/time_manager.py` from `#!/usr/bin/python3` to `#!/your/path/to/python/3.6/or/greater`.
+
 ## TODOS
 
 * Add docstrings to all functions without them
 * Create longer, better, and more descriptive docstrings for all functions
-* Clean up all functions
+* ~~Clean up all functions~~
 * Create a config function -- consult Adam for more info
-* Refactor the crap out of everything -- needs a total rewrite nearly from scratch
+* Refactor the crap out of everything~~ -- needs a total rewrite nearly from scratch~~
 * Add more view options such as viewing average hours per week, etc
 * Add a GUI or GUI-looking thing when printing out to console
 * ~~__Add functionality to add messages to a `START` or `STOP` command__
