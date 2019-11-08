@@ -14,14 +14,17 @@ SEC_IN_HOUR = 3_600
 def run(name, command, timeframe=None):
     '''Run main program'''
     # checks to see if the directory 'name' exists,
-    # and if it doesn't (your first time using this
-    # program), it creates the dir and your data file
+    # and if it doesn't it creates the dir
     if not os.path.isdir(name):
         os.mkdir(name)
-        with open(name + '/data.csv', 'w') as f:
-            f.write('START,STOP\n')
 
     os.chdir(name)
+
+    # checks to see if the data.csv file exists,
+    # and if it doesn't, it creates the file
+    if not os.path.isfile('data.csv'):
+        with open('/data.csv', 'w') as f:
+            f.write('START,STOP\n')
 
     if command == 'START':
         start()
@@ -100,7 +103,7 @@ def view(timeframe):
 
 def to_datetime(sec):
     '''Convert total seconds to friendly strftime datetime format'''
-    strf_pattern = '%A, %b %d, %Y @ %H:%M:%S'
+    strf_pattern = '%a %F %T'
     return dt.fromtimestamp(sec).strftime(strf_pattern)
 
 
