@@ -39,6 +39,8 @@ Then after that alias is loaded (ex. `$ source ~/.bashrc`), you can call the
 * Refactor the crap out of everything -- needs a total rewrite nearly from scratch
 * Add more view options such as viewing average hours per week, etc
 * Add a GUI or GUI-looking thing when printing out to console
-* Add functionality to add messages to a `START` or `STOP` command
+* __Add functionality to add messages to a `START` or `STOP` command__
+  Look at updated `help.txt` for info on how to use it. Still needs to be implemented
+  in code.
 * Add categories of what your time is going to, like coding, working out,
   reading, etc.
