@@ -10,13 +10,15 @@ os.chdir(os.environ['HOME'] + '/time_manager')
 
 SEC_IN_DAY = 86_400
 SEC_IN_HOUR = 3_600
+SEC_IN_MIN = 60
 
-TIME_FORMAT_PATTERN = '%a %F %T'
+TIME_FORMAT_PATTERN = '%a %Y-%m-%d %H:%M:%S'
 
 FILE_DEST = 'data.csv'
 
 DELIMETER = ','
 EOL = '\n'
+
 
 def run(name, command, timeframe=None):
     '''Run main program'''
@@ -41,11 +43,15 @@ def run(name, command, timeframe=None):
     elif command == 'VIEW':
         view(timeframe)
 
+# TODO: dont allow user to start if already started
+
 
 def start():
     '''Add start time'''
     with open(FILE_DEST, 'a') as f:
         f.write(dt.now().strftime(TIME_FORMAT_PATTERN) + DELIMETER)
+
+# TODO: dont allow user to stop unless already started
 
 
 def stop():
@@ -71,40 +77,53 @@ def undo():
 
 def view(timeframe):
     '''Output data and summaries for logged time'''
-    with open(FILE_DEST) as f:
-        lines = [line.strip().split(DELIMETER) for line in f.readlines()[1:]]
-    # show everything if timeframe was not specified,
-    # otherwise only data for the past [timeframe] days.
-    if timeframe is None:
-        timeframe = (int(lines[-1][0]) - int(lines[0][0])) / SEC_IN_DAY
+    lines = [line.strip(EOL).split(DELIMETER) for line in readlines()[1:]]
+    times = [[to_dt(start), to_dt(stop)] for start, stop in lines]
 
     timeframe = int(timeframe)
-    if timeframe == 0:
-        timeframe = 1
-    timeframe_seconds = SEC_IN_DAY * timeframe
-    min_seconds = int(time.time()) - timeframe_seconds
-    data = [[int(sec) for sec in line]  # maps ['start', 'stop'] to ints
-            for line in lines
-            if int(line[0]) >= min_seconds]  # selects in timeframe
 
-    diffs = [stop - start for start, stop in data]
-    avg_hrs_per_day = float(sum(diffs)) / timeframe / SEC_IN_HOUR
-    for start, stop in data:
-        print(f'Started: {to_datetime(start)}')
-        print(f'Stopped: {to_datetime(stop)}\n')
-    print(f'You studied an average of {avg_hrs_per_day:.2f} hours per day '
-          f'for the past {timeframe} day(s).')
+    diff_seconds = [(stop - start).seconds for start, stop in times]
+    total_total_seconds = sum(diff_seconds)
+    avg_total_seconds = total_total_seconds // timeframe
+
+    display_lines(lines)
+    display('Average', avg_total_seconds, ' per day')
+    display('Total', total_total_seconds)
+
+
+def display_lines(lines):
+    ''''''
+    for start, stop in lines:
+        print(f'Start: {start}\nStop: {stop}')
+        delta = to_dt(stop) - to_dt(start)
+        display('Session time', delta.seconds, '\n')
+
+
+def display(title, total_seconds, trailer=''):
+    ''''''
+    secs = total_seconds % SEC_IN_MIN
+    mins = total_seconds // SEC_IN_MIN
+    hours = total_seconds // SEC_IN_HOUR
+    print(f'{title}: {hours:02}:{mins:02}:{secs:02}{trailer}')
+
+
+def to_dt(string):
+    ''''''
+    return dt.strptime(string, TIME_FORMAT_PATTERN)
 
 
 def readlines():
+    ''''''
     with open(FILE_DEST) as f:
         return f.readlines()
 
 
 def write(lines):
+    ''''''
     with open(FILE_DEST, 'w') as f:
         for line in lines:
             f.write(line)
+
 
 def last_stop(line):
     '''Determine if last time added to line was a stop time'''
@@ -114,11 +133,6 @@ def last_stop(line):
 def last_start(line):
     '''Determine if last time added to line was a start time'''
     return line[-1] == DELIMETER
-
-
-def to_datetime(sec):
-    '''Convert total seconds to friendly strftime datetime format'''
-    return dt.fromtimestamp(sec).strftime(TIME_FORMAT_PATTERN)
 
 
 def display_help():
