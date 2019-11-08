@@ -14,9 +14,9 @@ SEC_IN_MIN = 60
 
 TIME_FORMAT_PATTERN = '%a %Y-%m-%d %H:%M:%S'
 
-FILE_DEST = 'data.csv'
+FILE_DEST = 'data.psv'
 
-DELIMETER = ','
+DELIMETER = '|'
 EOL = '\n'
 
 
