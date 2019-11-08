@@ -130,6 +130,7 @@ def view(timeframe):
     total_total_seconds = sum(diff_seconds)
     avg_total_seconds = total_total_seconds // timeframe
 
+    print(f'\nShowing results for the past {timeframe} day(s)\n')
     display_lines(lines, times)
     display('Average', avg_total_seconds, ' per day')
     display('Total', total_total_seconds)
@@ -203,8 +204,18 @@ def is_help(arg):
 
 def is_view(args):
     '''Check if valid view command'''
+    if len(args) == 3:
+        if not is_valid_n(args[2]):
+            return False
     return (len(args) == 2 or len(args) == 3) and args[1].upper() == 'VIEW'
 
+
+def is_valid_n(arg):
+    '''Check N is integer greater than 0'''
+    try:
+        return int(arg) > 0
+    except ValueError:
+        return False
 
 def is_start(args):
     '''Check if valid start command'''
