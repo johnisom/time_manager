@@ -28,7 +28,7 @@ EOL = '\n'
 FORBIDDEN = [DELIMETER, MESSAGE_DELIM, EOL]
 
 
-def run(name, command, *args):
+def run(name, command, *args) -> None:
     '''Run main program'''
     message = ''
     timeframe = None
@@ -62,13 +62,13 @@ def run(name, command, *args):
         view(timeframe)
 
 
-def sanitize(text):
+def sanitize(text) -> str:
     for forbidden in FORBIDDEN:
         text = text.replace(forbidden, DELIM_REPLACEMENT)
     return text
 
 
-def start(message):
+def start(message) -> None:
     '''Add start time'''
     message = sanitize(message)
     with open(FILE_DEST) as f:
@@ -78,7 +78,7 @@ def start(message):
                 f'{MESSAGE_DELIM}{message}{DELIMETER}')
 
 
-def stop(message):
+def stop(message) -> None:
     '''Add stop time'''
     message = sanitize(message)
     with open(FILE_DEST) as f:
@@ -88,7 +88,7 @@ def stop(message):
                 f'{MESSAGE_DELIM}{message}{EOL}')
 
 
-def undo():
+def undo() -> None:
     '''Delete last start/stop time added'''
     lines = readlines()
     assert len(lines) > 1, "Cannot 'undo' anymore, reached max undo!"
@@ -104,7 +104,7 @@ def undo():
     write(data)
 
 
-def view(timeframe):
+def view(timeframe) -> None:
     '''Output data and summaries for logged time'''
     err_msg = "Cannot 'view' on incomplete data! Please use the 'STOP' command"
     with open(FILE_DEST) as f:
@@ -136,7 +136,7 @@ def view(timeframe):
     display('Total', total_total_seconds)
 
 
-def display_lines(lines, times):
+def display_lines(lines, times) -> None:
     ''''''
     for idx, (start, stop) in enumerate(lines):
         start_message = start[1]
@@ -152,7 +152,7 @@ def display_lines(lines, times):
         display('Session time', delta.seconds, '\n')
 
 
-def display(title, total_seconds, trailer=''):
+def display(title, total_seconds, trailer='') -> None:
     ''''''
     secs = total_seconds % SEC_IN_MIN
     mins = total_seconds // SEC_IN_MIN % SEC_IN_MIN
@@ -160,41 +160,41 @@ def display(title, total_seconds, trailer=''):
     print(f'{title}: {hours:02}:{mins:02}:{secs:02}{trailer}')
 
 
-def to_dt(string):
+def to_dt(string) -> dt:
     ''''''
     return dt.strptime(string, TIME_FORMAT_PATTERN)
 
 
-def readlines():
+def readlines() -> list:
     ''''''
     with open(FILE_DEST) as f:
         return f.readlines()
 
 
-def write(lines):
+def write(lines) -> None:
     ''''''
     with open(FILE_DEST, 'w') as f:
         for line in lines:
             f.write(line)
 
 
-def last_stop(line):
+def last_stop(line) -> bool:
     '''Determine if last time added to line was a stop time'''
     return line[-1] == EOL
 
 
-def last_start(line):
+def last_start(line) -> bool:
     '''Determine if last time added to line was a start time'''
     return line[-1] == DELIMETER
 
 
-def display_help():
+def display_help() -> None:
     '''Output help.txt to the console'''
     with open('help.txt') as f:
         print(f.read())
 
 
-def is_help(arg):
+def is_help(arg) -> bool:
     '''Check if command supplied is a help command'''
     arg = arg.upper()
     return (arg == 'HELP' or
@@ -202,7 +202,7 @@ def is_help(arg):
             arg == '--HELP')
 
 
-def is_view(args):
+def is_view(args) -> bool:
     '''Check if valid view command'''
     if len(args) == 3:
         if not is_valid_n(args[2]):
@@ -210,39 +210,39 @@ def is_view(args):
     return (len(args) == 2 or len(args) == 3) and args[1].upper() == 'VIEW'
 
 
-def is_valid_n(arg):
+def is_valid_n(arg) -> bool:
     '''Check N is integer greater than 0'''
     try:
         return int(arg) > 0
     except ValueError:
         return False
 
-def is_start(args):
+def is_start(args) -> bool:
     '''Check if valid start command'''
     return (is_message(args) or len(args) == 2) and args[1].upper() == 'START'
 
 
-def is_stop(args):
+def is_stop(args) -> bool:
     '''Check if valid stop command'''
     return (is_message(args) or len(args) == 2) and args[1].upper() == 'STOP'
 
 
-def is_undo(args):
+def is_undo(args) -> bool:
     '''Check if valid undo command'''
     return len(args) == 2 and args[1].upper() == 'UNDO'
 
 
-def is_message(args):
+def is_message(args) -> bool:
     '''Check if message supplied with start/stop command'''
     return len(args) == 4 and args[2].upper() == '-M'
 
 
-def is_all_alpha(name):
+def is_all_alpha(name) -> bool:
     '''Check if name supplied is only made of letters'''
     return all([char.isalpha() for char in name])
 
 
-def is_valid(args):
+def is_valid(args) -> bool:
     '''Check if format of arguments is correct as specified in help.txt'''
 
     return (is_start(args) or is_stop(args) or
