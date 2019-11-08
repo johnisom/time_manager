@@ -24,6 +24,11 @@ EOL = '\n'
 
 def run(name, command, *args):
     '''Run main program'''
+    message = ''
+    timeframe = None
+    command = command.upper()
+    name = name.upper()
+
     # checks to see if the directory f'{name}' exists,
     # and if it doesn't it creates the dir
     if not os.path.isdir(name):
@@ -35,9 +40,6 @@ def run(name, command, *args):
     # and if it doesn't, it creates the file
     if not os.path.isfile(FILE_DEST):
         write([f'START{DELIMETER}STOP{EOL}'])
-
-    message = ''
-    timeframe = None
 
     if len(args) == 1:
         timeframe = args[0]
@@ -159,6 +161,7 @@ def display_help():
 
 def is_help(arg):
     '''Check if command supplied is a help command'''
+    arg = arg.upper()
     return (arg == 'HELP' or
             arg == '-H' or
             arg == '--HELP')
@@ -166,27 +169,27 @@ def is_help(arg):
 
 def is_view(args):
     '''Check if valid view command'''
-    return (len(args) == 2 or len(args) == 3) and args[1] == 'VIEW'
+    return (len(args) == 2 or len(args) == 3) and args[1].upper() == 'VIEW'
 
 
 def is_start(args):
     '''Check if valid start command'''
-    return (is_message(args) or len(args) == 2) and args[1] == 'START'
+    return (is_message(args) or len(args) == 2) and args[1].upper() == 'START'
 
 
 def is_stop(args):
     '''Check if valid stop command'''
-    return (is_message(args) or len(args) == 2) and args[1] == 'STOP'
+    return (is_message(args) or len(args) == 2) and args[1].upper() == 'STOP'
 
 
 def is_undo(args):
     '''Check if valid undo command'''
-    return len(args) == 2 and args[1] == 'UNDO'
+    return len(args) == 2 and args[1].upper() == 'UNDO'
 
 
 def is_message(args):
     '''Check if message supplied with start/stop command'''
-    return len(args) == 4 and args[2] == '-M'
+    return len(args) == 4 and args[2].upper() == '-M'
 
 
 def is_all_alpha(name):
@@ -203,7 +206,7 @@ def is_valid(args):
 if __name__ == "__main__":
     # gets the arguments passed in when run as a script/command
     # (ex. ./time_manager.py NAME START/STOP/UNDO/VIEW [N])
-    args = [arg.upper() for arg in sys.argv[1:]]
+    args = sys.argv[1:]
 
     # checks whether to display help or to run the script
     if not is_valid(args) or is_help(args[0]):
