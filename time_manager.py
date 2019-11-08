@@ -13,6 +13,9 @@ SEC_IN_HOUR = 3_600
 
 TIME_FORMAT_PATTERN = '%a %F %T'
 
+FILE_DEST = 'data.csv'
+
+
 def run(name, command, timeframe=None):
     '''Run main program'''
     # checks to see if the directory 'name' exists,
@@ -24,9 +27,8 @@ def run(name, command, timeframe=None):
 
     # checks to see if the data.csv file exists,
     # and if it doesn't, it creates the file
-    if not os.path.isfile('data.csv'):
-        with open('data.csv', 'w') as f:
-            f.write('START,STOP\n')
+    if not os.path.isfile(FILE_DEST):
+        write(['START,STOP\n'])
 
     if command == 'START':
         start()
@@ -40,45 +42,34 @@ def run(name, command, timeframe=None):
 
 def start():
     '''Add start time'''
-    with open('data.csv', 'a') as f:
+    with open(FILE_DEST, 'a') as f:
         f.write(str(int(time.time())) + ',')
 
 
 def stop():
     '''Add stop time'''
-    with open('data.csv', 'a') as f:
+    with open(FILE_DEST, 'a') as f:
         f.write(str(int(time.time())) + '\n')
 
 
 def undo():
     '''Delete last start/stop time added'''
-    with open('data.csv') as f:
-        lines = f.readlines()
+    lines = readlines()
 
     data = lines[:-1]
     last_line = lines[-1]
 
     if last_stop(last_line):
-        # last_line.split(',')[0] is start time of last_line
         data.append(last_line.split(',')[0] + ',')
 
     # rewrite data.csv with all the previous data
     # except the last start/stop time
-    with open('data.csv', 'w') as f:
-        for line in data:
-            f.write(line)
+    write(data)
 
-def last_stop(line):
-    '''Determine if last time added to line was a stop time'''
-    return line[-1] == '\n'
-
-def last_start(line):
-    '''Determine if last time added to line was a start time'''
-    return line[-1] == ','
 
 def view(timeframe):
     '''Output data and summaries for logged time'''
-    with open('data.csv') as f:
+    with open(FILE_DEST) as f:
         lines = [line.strip().split(',') for line in f.readlines()[1:]]
     # show everything if timeframe was not specified,
     # otherwise only data for the past [timeframe] days.
@@ -99,8 +90,28 @@ def view(timeframe):
     for start, stop in data:
         print(f'Started: {to_datetime(start)}')
         print(f'Stopped: {to_datetime(stop)}\n')
-    print(f'You studied an average of {avg_hrs_per_day:.2f} hours per day '\
+    print(f'You studied an average of {avg_hrs_per_day:.2f} hours per day '
           f'for the past {timeframe} day(s).')
+
+
+def readlines():
+    with open(FILE_DEST) as f:
+        return f.readlines()
+
+
+def write(lines):
+    with open(FILE_DEST, 'w') as f:
+        for line in lines:
+            f.write(line)
+
+def last_stop(line):
+    '''Determine if last time added to line was a stop time'''
+    return line[-1] == '\n'
+
+
+def last_start(line):
+    '''Determine if last time added to line was a start time'''
+    return line[-1] == ','
 
 
 def to_datetime(sec):
