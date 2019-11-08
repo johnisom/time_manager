@@ -33,7 +33,7 @@ def run(name, command, *args):
     # checks to see if the data.csv file exists,
     # and if it doesn't, it creates the file
     if not os.path.isfile(FILE_DEST):
-        write(['START,STOP\n'])
+        write([f'START{DELIMETER}STOP{EOL}'])
 
     message = None
     timeframe = None
