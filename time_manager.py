@@ -153,8 +153,28 @@ def is_help(arg):
 
 
 def is_view(args):
-    '''Check if command supplied is a view command'''
-    return len(args) >= 2 and args[1] == 'VIEW'
+    '''Check if valid view command'''
+    return (len(args) == 2 or len(args) == 3) and args[1] == 'VIEW'
+
+
+def is_start(args):
+    '''Check if valid start command'''
+    return (is_message(args) or len(args) == 2) and args[1] == 'START'
+
+
+def is_stop(args):
+    '''Check if valid stop command'''
+    return (is_message(args) or len(args) == 2) and args[1] == 'STOP'
+
+
+def is_undo(args):
+    '''Check if valid undo command'''
+    return len(args) == 2 and args[1] == 'UNDO'
+
+
+def is_message(args):
+    '''Check if message supplied with start/stop command'''
+    return len(args) == 4 and args[2] == '-M'
 
 
 def is_all_alpha(name):
@@ -162,36 +182,10 @@ def is_all_alpha(name):
     return all([char.isalpha() for char in name])
 
 
-def is_invalid_command(command):
-    '''Check if command is none of the valid 4 commands'''
-    return (command != 'START' and
-            command != 'STOP' and
-            command != 'UNDO' and
-            command != 'VIEW')
-
-
 def is_valid(args):
     '''Check if format of arguments is correct as specified in help.txt'''
-    # if the command is VIEW and it has a total of 2 or 3
-    # args ({name, view, [n]}), then its a valid command
-    if is_view(args) and (len(args) == 3 or len(args) == 2):
-        return True
 
-    # if less than or more than 2 arguments supplied
-    # (ex. {JOHN} or {JOHN START EXTRA_ARG}), then the command
-    # does not follow proper format
-    elif len(args) != 2:
-        return False
-
-    # if the command is not one of the supported 4, then it is invalid
-    elif is_invalid_command(args[1]):
-        return False
-
-    # if the name has anything other than letters, it's invalid
-    elif not is_all_alpha(args[0]):
-        return False
-    else:
-        return True
+    return (is_start(args) or is_stop(args) or is_view(args) or is_undo(args)) and is_all_alpha(args[0]):
 
 
 if __name__ == "__main__":
