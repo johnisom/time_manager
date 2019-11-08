@@ -40,7 +40,7 @@ Also, if you dont have the path `/usr/bin/python3`, update the shebang at the to
 
 ## TODOS
 
-* Add docstrings to all functions without them
+* ~~Add docstrings to all functions without them~~
 * Create longer, better, and more descriptive docstrings for all functions
 * ~~Clean up all functions~~
 * Create a config function -- consult Adam for more info
@@ -52,3 +52,4 @@ Also, if you dont have the path `/usr/bin/python3`, update the shebang at the to
   in code.~~
 * Add categories of what your time is going to, like coding, working out,
   reading, etc.
+* ~~Add typing~~
