@@ -19,7 +19,7 @@ STOP:
 
   MESSAGE (with -m flag):
     Add a message/note. Example messages would be "finished all but
-    3 TODOS" or "finally done with djikstras algorithm."
+    3 TODOS" or "finally done with Dijkstra's algorithm."
 
 UNDO:
   You use this command to undo a previous START or STOP.
