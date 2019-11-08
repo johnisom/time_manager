@@ -103,8 +103,19 @@ def view(timeframe):
     err_msg = "Cannot 'view' on incomplete data! Please use the 'STOP' command"
     with open(FILE_DEST) as f:
         assert last_stop(f.readlines()[-1]), err_msg
-    lines = [line.strip(EOL).split(DELIMETER) for line in readlines()[1:]]
-    times = [[to_dt(start), to_dt(stop)] for start, stop in lines]
+
+    lines = []  # [[[entry, message], [entry, message]], [[entry, message], [entry, message]], etc.]
+    for line in readlines()[1:]:
+        start, stop = line.strip(EOL).split(DELIMETER)
+        start = start.split(MESSAGE_DELIM)
+        stop = stop.split(MESSAGE_DELIM)
+        lines.append([start, stop])
+
+    times = []  # [[datetime, datetime], [datetime, datetime], etc.]
+    for start, stop in lines:
+        start = to_dt(start[0])
+        stop = to_dt(stop[0])
+        times.append([start, stop])
 
     timeframe = int(timeframe)
 
@@ -112,16 +123,24 @@ def view(timeframe):
     total_total_seconds = sum(diff_seconds)
     avg_total_seconds = total_total_seconds // timeframe
 
-    display_lines(lines)
+    display_lines(lines, times)
     display('Average', avg_total_seconds, ' per day')
     display('Total', total_total_seconds)
 
 
-def display_lines(lines):
+def display_lines(lines, times):
     ''''''
-    for start, stop in lines:
-        print(f'Start: {start}\nStop: {stop}')
-        delta = to_dt(stop) - to_dt(start)
+    for idx, (start, stop) in enumerate(lines):
+        start_message = start[1]
+        stop_message = stop[1]
+        if start_message:
+            start_message = f' -> "{start_message}"'
+        if stop_message:
+            stop_message = f' -> "{stop_message}"'
+
+        print(f'Start: {start[0]}{start_message}')
+        print(f'Stop: {stop[0]}{stop_message}')
+        delta = times[idx][1] - times[idx][0]
         display('Session time', delta.seconds, '\n')
 
 
