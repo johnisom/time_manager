@@ -43,19 +43,19 @@ def run(name, command, timeframe=None):
     elif command == 'VIEW':
         view(timeframe)
 
-# TODO: dont allow user to start if already started
-
 
 def start():
     '''Add start time'''
+    with open(FILE_DEST) as f:
+        assert last_stop(f.readlines()[-1]), "Cannot 'start' twice in a row!"
     with open(FILE_DEST, 'a') as f:
         f.write(dt.now().strftime(TIME_FORMAT_PATTERN) + DELIMETER)
-
-# TODO: dont allow user to stop unless already started
 
 
 def stop():
     '''Add stop time'''
+    with open(FILE_DEST) as f:
+        assert last_start(f.readlines()[-1]), "Cannot 'stop' twice in a row!"
     with open(FILE_DEST, 'a') as f:
         f.write(dt.now().strftime(TIME_FORMAT_PATTERN) + EOL)
 
@@ -63,6 +63,7 @@ def stop():
 def undo():
     '''Delete last start/stop time added'''
     lines = readlines()
+    assert len(lines) > 1, "Cannot 'undo' anymore, reached max undo!"
 
     data = lines[:-1]
     last_line = lines[-1]
@@ -77,6 +78,9 @@ def undo():
 
 def view(timeframe):
     '''Output data and summaries for logged time'''
+    err_msg = "Cannot 'view' on incomplete data! Please use the 'STOP' command"
+    with open(FILE_DEST) as f:
+        assert last_stop(f.readlines()[-1]), err_msg
     lines = [line.strip(EOL).split(DELIMETER) for line in readlines()[1:]]
     times = [[to_dt(start), to_dt(stop)] for start, stop in lines]
 
