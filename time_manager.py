@@ -21,6 +21,8 @@ DELIM_REPLACEMENT = '^'
 MESSAGE_DELIM = '%%'
 EOL = '\n'
 
+FORBIDDEN = [DELIMETER, MESSAGE_DELIM, EOL]
+
 
 def run(name, command, *args):
     '''Run main program'''
@@ -56,9 +58,15 @@ def run(name, command, *args):
         view(timeframe)
 
 
+def sanitize(text):
+    for forbidden in FORBIDDEN:
+        text = text.replace(forbidden, DELIM_REPLACEMENT)
+    return text
+
+
 def start(message):
     '''Add start time'''
-    message = message.replace(DELIMETER, DELIM_REPLACEMENT)
+    message = sanitize(message)
     with open(FILE_DEST) as f:
         assert last_stop(f.readlines()[-1]), "Cannot 'start' twice in a row!"
     with open(FILE_DEST, 'a') as f:
@@ -67,7 +75,7 @@ def start(message):
 
 def stop(message):
     '''Add stop time'''
-    message = message.replace(DELIMETER, DELIM_REPLACEMENT)
+    message = sanitize(message)
     with open(FILE_DEST) as f:
         assert last_start(f.readlines()[-1]), "Cannot 'stop' twice in a row!"
     with open(FILE_DEST, 'a') as f:
