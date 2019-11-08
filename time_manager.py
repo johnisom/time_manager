@@ -15,10 +15,12 @@ TIME_FORMAT_PATTERN = '%a %F %T'
 
 FILE_DEST = 'data.csv'
 
+DELIMETER = ','
+EOL = '\n'
 
 def run(name, command, timeframe=None):
     '''Run main program'''
-    # checks to see if the directory 'name' exists,
+    # checks to see if the directory f'{name}' exists,
     # and if it doesn't it creates the dir
     if not os.path.isdir(name):
         os.mkdir(name)
@@ -43,13 +45,13 @@ def run(name, command, timeframe=None):
 def start():
     '''Add start time'''
     with open(FILE_DEST, 'a') as f:
-        f.write(str(int(time.time())) + ',')
+        f.write(str(int(time.time())) + DELIMETER)
 
 
 def stop():
     '''Add stop time'''
     with open(FILE_DEST, 'a') as f:
-        f.write(str(int(time.time())) + '\n')
+        f.write(str(int(time.time())) + EOL)
 
 
 def undo():
@@ -60,7 +62,7 @@ def undo():
     last_line = lines[-1]
 
     if last_stop(last_line):
-        data.append(last_line.split(',')[0] + ',')
+        data.append(last_line.split(DELIMETER)[0] + DELIMETER)
 
     # rewrite data.csv with all the previous data
     # except the last start/stop time
@@ -70,7 +72,7 @@ def undo():
 def view(timeframe):
     '''Output data and summaries for logged time'''
     with open(FILE_DEST) as f:
-        lines = [line.strip().split(',') for line in f.readlines()[1:]]
+        lines = [line.strip().split(DELIMETER) for line in f.readlines()[1:]]
     # show everything if timeframe was not specified,
     # otherwise only data for the past [timeframe] days.
     if timeframe is None:
@@ -106,12 +108,12 @@ def write(lines):
 
 def last_stop(line):
     '''Determine if last time added to line was a stop time'''
-    return line[-1] == '\n'
+    return line[-1] == EOL
 
 
 def last_start(line):
     '''Determine if last time added to line was a start time'''
-    return line[-1] == ','
+    return line[-1] == DELIMETER
 
 
 def to_datetime(sec):
