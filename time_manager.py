@@ -45,13 +45,13 @@ def run(name, command, timeframe=None):
 def start():
     '''Add start time'''
     with open(FILE_DEST, 'a') as f:
-        f.write(str(int(time.time())) + DELIMETER)
+        f.write(dt.now().strftime(TIME_FORMAT_PATTERN) + DELIMETER)
 
 
 def stop():
     '''Add stop time'''
     with open(FILE_DEST, 'a') as f:
-        f.write(str(int(time.time())) + EOL)
+        f.write(dt.now().strftime(TIME_FORMAT_PATTERN) + EOL)
 
 
 def undo():
