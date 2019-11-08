@@ -8,6 +8,7 @@ import sys
 import os
 import time
 from datetime import datetime as dt
+from typing import Union, List, Optional
 
 
 os.chdir(os.environ['HOME'] + '/time_manager')
@@ -28,7 +29,7 @@ EOL = '\n'
 FORBIDDEN = [DELIMETER, MESSAGE_DELIM, EOL]
 
 
-def run(name: str, command: str, *args: list) -> None:
+def run(name: str, command: str, *args: List[str]) -> None:
     '''Run main program'''
     message = ''
     timeframe = None
@@ -104,7 +105,7 @@ def undo() -> None:
     write(data)
 
 
-def view(timeframe: str or None) -> None:
+def view(timeframe: Union[str, None]) -> None:
     '''Output data and summaries for logged time'''
     err_msg = "Cannot 'view' on incomplete data! Please use the 'STOP' command"
     with open(FILE_DEST) as f:
@@ -136,7 +137,7 @@ def view(timeframe: str or None) -> None:
     display('Total', total_total_seconds)
 
 
-def display_lines(lines: list, times: list) -> None:
+def display_lines(lines: List[List[List[str]]], times: List[List[dt]]) -> None:
     ''''''
     for idx, (start, stop) in enumerate(lines):
         start_message = start[1]
@@ -152,7 +153,8 @@ def display_lines(lines: list, times: list) -> None:
         display('Session time', delta.seconds, '\n')
 
 
-def display(title: str, total_seconds: int, trailer: str = '') -> None:
+def display(title: str, total_seconds: int,
+            trailer: Optional[str] = '') -> None:
     ''''''
     secs = total_seconds % SEC_IN_MIN
     mins = total_seconds // SEC_IN_MIN % SEC_IN_MIN
@@ -165,13 +167,13 @@ def to_dt(string: str) -> dt:
     return dt.strptime(string, TIME_FORMAT_PATTERN)
 
 
-def readlines() -> list:
+def readlines() -> List[str]:
     ''''''
     with open(FILE_DEST) as f:
         return f.readlines()
 
 
-def write(lines: list) -> None:
+def write(lines: List[str]) -> None:
     ''''''
     with open(FILE_DEST, 'w') as f:
         for line in lines:
@@ -202,7 +204,7 @@ def is_help(arg: str) -> bool:
             arg == '--HELP')
 
 
-def is_view(args: list) -> bool:
+def is_view(args: List[str]) -> bool:
     '''Check if valid view command'''
     if len(args) == 3:
         if not is_valid_n(args[2]):
@@ -217,22 +219,23 @@ def is_valid_n(arg: str) -> bool:
     except ValueError:
         return False
 
-def is_start(args: list) -> bool:
+
+def is_start(args: List[str]) -> bool:
     '''Check if valid start command'''
     return (is_message(args) or len(args) == 2) and args[1].upper() == 'START'
 
 
-def is_stop(args: list) -> bool:
+def is_stop(args: List[str]) -> bool:
     '''Check if valid stop command'''
     return (is_message(args) or len(args) == 2) and args[1].upper() == 'STOP'
 
 
-def is_undo(args: list) -> bool:
+def is_undo(args: List[str]) -> bool:
     '''Check if valid undo command'''
     return len(args) == 2 and args[1].upper() == 'UNDO'
 
 
-def is_message(args: list) -> bool:
+def is_message(args: List[str]) -> bool:
     '''Check if message supplied with start/stop command'''
     return len(args) == 4 and args[2].upper() == '-M'
 
@@ -242,7 +245,7 @@ def is_all_alpha(name: str) -> bool:
     return all([char.isalpha() for char in name])
 
 
-def is_valid(args: list) -> bool:
+def is_valid(args: List[str]) -> bool:
     '''Check if format of arguments is correct as specified in help.txt'''
 
     return (is_start(args) or is_stop(args) or
