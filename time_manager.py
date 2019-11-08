@@ -1,5 +1,9 @@
 #!/usr/bin/python3
 
+# Update the above shebang if that path does not
+# exist on your system. Make sure that it points
+# to a version of python 3.6 or greater.
+
 import sys
 import os
 import time
@@ -70,7 +74,8 @@ def start(message):
     with open(FILE_DEST) as f:
         assert last_stop(f.readlines()[-1]), "Cannot 'start' twice in a row!"
     with open(FILE_DEST, 'a') as f:
-        f.write(f'{dt.now().strftime(TIME_FORMAT_PATTERN)}{MESSAGE_DELIM}{message}{DELIMETER}')
+        f.write(f'{dt.now().strftime(TIME_FORMAT_PATTERN)}'
+                f'{MESSAGE_DELIM}{message}{DELIMETER}')
 
 
 def stop(message):
@@ -79,7 +84,8 @@ def stop(message):
     with open(FILE_DEST) as f:
         assert last_start(f.readlines()[-1]), "Cannot 'stop' twice in a row!"
     with open(FILE_DEST, 'a') as f:
-        f.write(f'{dt.now().strftime(TIME_FORMAT_PATTERN)}{MESSAGE_DELIM}{message}{EOL}')
+        f.write(f'{dt.now().strftime(TIME_FORMAT_PATTERN)}'
+                f'{MESSAGE_DELIM}{message}{EOL}')
 
 
 def undo():
@@ -104,7 +110,8 @@ def view(timeframe):
     with open(FILE_DEST) as f:
         assert last_stop(f.readlines()[-1]), err_msg
 
-    lines = []  # [[[entry, message], [entry, message]], [[entry, message], [entry, message]], etc.]
+    lines = []  # [[[entry, message], [entry, message]],
+    #              [[entry, message], [entry, message]], etc.]
     for line in readlines()[1:]:
         start, stop = line.strip(EOL).split(DELIMETER)
         start = start.split(MESSAGE_DELIM)
@@ -227,7 +234,8 @@ def is_all_alpha(name):
 def is_valid(args):
     '''Check if format of arguments is correct as specified in help.txt'''
 
-    return (is_start(args) or is_stop(args) or is_view(args) or is_undo(args)) and is_all_alpha(args[0])
+    return (is_start(args) or is_stop(args) or
+            is_view(args) or is_undo(args)) and is_all_alpha(args[0])
 
 
 if __name__ == "__main__":
