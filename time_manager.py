@@ -11,6 +11,8 @@ os.chdir(os.environ['HOME'] + '/time_manager')
 SEC_IN_DAY = 86_400
 SEC_IN_HOUR = 3_600
 
+TIME_FORMAT_PATTERN = '%a %F %T'
+
 def run(name, command, timeframe=None):
     '''Run main program'''
     # checks to see if the directory 'name' exists,
@@ -103,8 +105,7 @@ def view(timeframe):
 
 def to_datetime(sec):
     '''Convert total seconds to friendly strftime datetime format'''
-    strf_pattern = '%a %F %T'
-    return dt.fromtimestamp(sec).strftime(strf_pattern)
+    return dt.fromtimestamp(sec).strftime(TIME_FORMAT_PATTERN)
 
 
 def display_help():
