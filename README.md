@@ -33,8 +33,6 @@ Then after that alias is loaded (ex. `$ source ~/.bashrc`), you can call the
 ## TODOS
 
 * Clean up all functions
-* Rewrite data storage and retrieval to store formatted date-time strings, much
-  like the ones that are output to us with the `VIEW` command
 * Create a config function -- consult Adam for more info
 * Refactor the crap out of everything -- needs a total rewrite nearly from scratch
 * Add more view options such as viewing average hours per week, etc
