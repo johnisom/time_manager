@@ -32,6 +32,8 @@ Then after that alias is loaded (ex. `$ source ~/.bashrc`), you can call the
 
 ## TODOS
 
+* Add docstrings to all functions without them
+* Create longer, better, and more descriptive docstrings for all functions
 * Clean up all functions
 * Create a config function -- consult Adam for more info
 * Refactor the crap out of everything -- needs a total rewrite nearly from scratch
