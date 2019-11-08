@@ -20,7 +20,7 @@ DELIMETER = ','
 EOL = '\n'
 
 
-def run(name, command, timeframe=None):
+def run(name, command, *args):
     '''Run main program'''
     # checks to see if the directory f'{name}' exists,
     # and if it doesn't it creates the dir
@@ -34,17 +34,25 @@ def run(name, command, timeframe=None):
     if not os.path.isfile(FILE_DEST):
         write(['START,STOP\n'])
 
+    message = None
+    timeframe = None
+
+    if len(args) == 1:
+        timeframe = args[0]
+    elif len(args) == 2:
+        message = args[1]
+
     if command == 'START':
-        start()
+        start(message)
     elif command == 'STOP':
-        stop()
+        stop(message)
     elif command == 'UNDO':
         undo()
     elif command == 'VIEW':
         view(timeframe)
 
 
-def start():
+def start(message):
     '''Add start time'''
     with open(FILE_DEST) as f:
         assert last_stop(f.readlines()[-1]), "Cannot 'start' twice in a row!"
@@ -52,7 +60,7 @@ def start():
         f.write(dt.now().strftime(TIME_FORMAT_PATTERN) + DELIMETER)
 
 
-def stop():
+def stop(message):
     '''Add stop time'''
     with open(FILE_DEST) as f:
         assert last_start(f.readlines()[-1]), "Cannot 'stop' twice in a row!"
