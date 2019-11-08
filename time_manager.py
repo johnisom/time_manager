@@ -18,6 +18,7 @@ FILE_DEST = 'data.psv'
 
 DELIMETER = '|'
 DELIM_REPLACEMENT = '^'
+MESSAGE_DELIM = '%%'
 EOL = '\n'
 
 
@@ -35,7 +36,7 @@ def run(name, command, *args):
     if not os.path.isfile(FILE_DEST):
         write([f'START{DELIMETER}STOP{EOL}'])
 
-    message = None
+    message = ''
     timeframe = None
 
     if len(args) == 1:
@@ -55,22 +56,20 @@ def run(name, command, *args):
 
 def start(message):
     '''Add start time'''
-    if message is not None:
-        message = message.replace(DELIMETER, DELIM_REPLACEMENT)
+    message = message.replace(DELIMETER, DELIM_REPLACEMENT)
     with open(FILE_DEST) as f:
         assert last_stop(f.readlines()[-1]), "Cannot 'start' twice in a row!"
     with open(FILE_DEST, 'a') as f:
-        f.write(dt.now().strftime(TIME_FORMAT_PATTERN) + DELIMETER)
+        f.write(f'{dt.now().strftime(TIME_FORMAT_PATTERN)}{MESSAGE_DELIM}{message}{DELIMETER}')
 
 
 def stop(message):
     '''Add stop time'''
-    if message is not None:
-        message = message.replace(DELIMETER, DELIM_REPLACEMENT)
+    message = message.replace(DELIMETER, DELIM_REPLACEMENT)
     with open(FILE_DEST) as f:
         assert last_start(f.readlines()[-1]), "Cannot 'stop' twice in a row!"
     with open(FILE_DEST, 'a') as f:
-        f.write(dt.now().strftime(TIME_FORMAT_PATTERN) + EOL)
+        f.write(f'{dt.now().strftime(TIME_FORMAT_PATTERN)}{MESSAGE_DELIM}{message}{EOL}')
 
 
 def undo():
