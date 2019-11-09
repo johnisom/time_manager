@@ -108,11 +108,13 @@ def undo() -> None:
 
 def view(timeframe: Union[str, None]) -> None:
     '''Output data and summaries for logged time'''
-    err_msg = "Cannot 'view' on incomplete data! Please use the 'STOP' command"
-    with open(FILE_DEST) as f:
-        assert last_stop(f.readlines()[-1]), err_msg
-
     lines = get_split_lines()
+
+    # Use current time as end time if no end time
+    if last_start(readlines()[-1]):
+        now_formatted = datetime.now().strftime(TIME_FORMAT_PATTERN)
+        lines[-1][1] = [now_formatted, 'CURRENT']
+
     times = get_times(lines)
     if not times:
         print('No data to report')
@@ -137,7 +139,8 @@ def view(timeframe: Union[str, None]) -> None:
     display('Total', total_total_seconds)
 
 
-def display_lines(lines: List[List[List[str]]], times: List[List[datetime]]) -> None:
+def display_lines(lines: List[List[List[str]]],
+                  times: List[List[datetime]]) -> None:
     '''Display start times, stop times, messages, and session times'''
     for idx, (start, stop) in enumerate(lines):
         start_message = start[1]
