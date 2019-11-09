@@ -7,7 +7,7 @@
 import sys
 import os
 import time
-from datetime import datetime as dt
+from datetime import datetime, timedelta
 from typing import Union, List, Optional
 
 
@@ -76,7 +76,7 @@ def start(message: str) -> None:
     with open(FILE_DEST) as f:
         assert last_stop(f.readlines()[-1]), "Cannot 'start' twice in a row!"
     with open(FILE_DEST, 'a') as f:
-        f.write(f'{dt.now().strftime(TIME_FORMAT_PATTERN)}'
+        f.write(f'{datetime.now().strftime(TIME_FORMAT_PATTERN)}'
                 f'{MESSAGE_DELIM}{message}{DELIMETER}')
 
 
@@ -86,7 +86,7 @@ def stop(message: str) -> None:
     with open(FILE_DEST) as f:
         assert last_start(f.readlines()[-1]), "Cannot 'stop' twice in a row!"
     with open(FILE_DEST, 'a') as f:
-        f.write(f'{dt.now().strftime(TIME_FORMAT_PATTERN)}'
+        f.write(f'{datetime.now().strftime(TIME_FORMAT_PATTERN)}'
                 f'{MESSAGE_DELIM}{message}{EOL}')
 
 
@@ -112,21 +112,20 @@ def view(timeframe: Union[str, None]) -> None:
     with open(FILE_DEST) as f:
         assert last_stop(f.readlines()[-1]), err_msg
 
-    lines = []  # [[[entry, message], [entry, message]],
-    #              [[entry, message], [entry, message]], etc.]
-    for line in readlines()[1:]:
-        start, stop = line.strip(EOL).split(DELIMETER)
-        start = start.split(MESSAGE_DELIM)
-        stop = stop.split(MESSAGE_DELIM)
-        lines.append([start, stop])
+    lines = get_split_lines()
+    times = get_times(lines)
+    if not times:
+        print('No data to report')
+        return
 
-    times = []  # [[datetime, datetime], [datetime, datetime], etc.]
-    for start, stop in lines:
-        start = to_dt(start[0])
-        stop = to_dt(stop[0])
-        times.append([start, stop])
+    if timeframe is None:
+        timeframe = (times[-1][0] - times[0][0]).days + 1
+    else:
+        timeframe = int(timeframe)
 
-    timeframe = int(timeframe)
+    idx = index_in_timeframe(times, timeframe)
+    lines = lines[idx:]
+    times = times[idx:]
 
     diff_seconds = [(stop - start).seconds for start, stop in times]
     total_total_seconds = sum(diff_seconds)
@@ -138,7 +137,7 @@ def view(timeframe: Union[str, None]) -> None:
     display('Total', total_total_seconds)
 
 
-def display_lines(lines: List[List[List[str]]], times: List[List[dt]]) -> None:
+def display_lines(lines: List[List[List[str]]], times: List[List[datetime]]) -> None:
     '''Display start times, stop times, messages, and session times'''
     for idx, (start, stop) in enumerate(lines):
         start_message = start[1]
@@ -163,9 +162,46 @@ def display(title: str, total_seconds: int,
     print(f'{title}: {hours:02}:{mins:02}:{secs:02}{trailer}')
 
 
-def to_dt(string: str) -> dt:
-    '''Convert str to dt'''
-    return dt.strptime(string, TIME_FORMAT_PATTERN)
+def get_split_lines() -> List[List[List[str]]]:
+    '''Get lines split into entry and message subcomponents'''
+    lines = []
+    # [[[entry, message], [entry, message]],
+    #  [[entry, message], [entry, message]], etc.]
+    for line in readlines()[1:]:
+        start, stop = line.strip(EOL).split(DELIMETER)
+        start = start.split(MESSAGE_DELIM)
+        stop = stop.split(MESSAGE_DELIM)
+        lines.append([start, stop])
+    return lines
+
+
+def get_times(lines: List[List[List[str]]]) -> List[List[datetime]]:
+    '''From split lines create sublists of start and stop datetime objects'''
+    # [[datetime, datetime], [datetime, datetime], etc.]
+    times = []
+    for start, stop in lines:
+        start = to_datetime(start[0])
+        stop = to_datetime(stop[0])
+        times.append([start, stop])
+    return times
+
+
+def index_in_timeframe(times: List[List[datetime]], timeframe: int) -> int:
+    '''Find index that selects times in past timeframe days'''
+    today = datetime.now().date()
+    days_ago = today - timedelta(days=int(timeframe) - 1)
+    days_ago_datetime = datetime(days_ago.year, days_ago.month, days_ago.day)
+    idx = 0
+    for start, _ in times:
+        if start >= days_ago_datetime:
+            break
+        idx += 1
+    return idx
+
+
+def to_datetime(string: str) -> datetime:
+    '''Convert str to datetime'''
+    return datetime.strptime(string, TIME_FORMAT_PATTERN)
 
 
 def readlines() -> List[str]:
