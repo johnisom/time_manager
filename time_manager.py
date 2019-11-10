@@ -11,22 +11,10 @@ from datetime import datetime, timedelta
 from typing import Union, List, Optional
 
 
+# from modules as part of project
+from constants import *
+
 os.chdir(os.environ['HOME'] + '/time_manager')
-
-SEC_IN_DAY = 86_400
-SEC_IN_HOUR = 3_600
-SEC_IN_MIN = 60
-
-TIME_FORMAT_PATTERN = '%a %Y-%m-%d %H:%M:%S'
-
-FILE_DEST = 'data.psv'
-
-DELIMETER = '|'
-DELIM_REPLACEMENT = '^'
-MESSAGE_DELIM = '%%'
-EOL = '\n'
-
-FORBIDDEN = [DELIMETER, MESSAGE_DELIM, EOL]
 
 
 def run(name: str, command: str, *args: List[str]) -> None:
