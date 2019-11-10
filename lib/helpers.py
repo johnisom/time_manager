@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from typing import List
 
 
-from constants import (FORBIDDEN, DELIM_REPLACEMENT, EOL,
+from .constants import (FORBIDDEN, DELIM_REPLACEMENT, EOL,
                        DELIMETER, MESSAGE_DELIM, FILE_DEST,
                        TIME_FORMAT_PATTERN)
 

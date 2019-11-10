@@ -2,7 +2,7 @@ from typing import List, Optional
 from datetime import datetime
 
 
-from constants import SEC_IN_MIN, SEC_IN_HOUR
+from .constants import SEC_IN_MIN, SEC_IN_HOUR
 
 
 def display_lines(lines: List[List[List[str]]],
@@ -42,5 +42,5 @@ def display_timeframe(timeframe_from: int, timeframe_to: int) -> None:
 
 def display_help() -> None:
     '''Output help.txt to the console'''
-    with open('help.txt') as f:
+    with open('../help.txt') as f:
         print(f.read())

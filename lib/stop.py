@@ -1,7 +1,7 @@
 from datetime import datetime
 
-from helpers import readlines, sanitize, last_stop
-from constants import FILE_DEST, TIME_FORMAT_PATTERN, MESSAGE_DELIM, EOL
+from .helpers import readlines, sanitize, last_stop
+from .constants import FILE_DEST, TIME_FORMAT_PATTERN, MESSAGE_DELIM, EOL
 
 
 def stop(message: str) -> None:
