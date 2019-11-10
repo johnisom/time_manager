@@ -72,9 +72,10 @@ def sanitize(text: str) -> str:
 
 def start(message: str) -> None:
     '''Add start time'''
+    if last_start(readlines()[-1]):
+        print("Cannot 'start' twice in a row!")
+        return
     message = sanitize(message)
-    with open(FILE_DEST) as f:
-        assert last_stop(f.readlines()[-1]), "Cannot 'start' twice in a row!"
     with open(FILE_DEST, 'a') as f:
         f.write(f'{datetime.now().strftime(TIME_FORMAT_PATTERN)}'
                 f'{MESSAGE_DELIM}{message}{DELIMETER}')
@@ -82,9 +83,10 @@ def start(message: str) -> None:
 
 def stop(message: str) -> None:
     '''Add stop time'''
+    if last_stop(readlines()[-1]):
+        print("Cannot 'stop' twice in a row!")
+        return
     message = sanitize(message)
-    with open(FILE_DEST) as f:
-        assert last_start(f.readlines()[-1]), "Cannot 'stop' twice in a row!"
     with open(FILE_DEST, 'a') as f:
         f.write(f'{datetime.now().strftime(TIME_FORMAT_PATTERN)}'
                 f'{MESSAGE_DELIM}{message}{EOL}')
@@ -93,8 +95,9 @@ def stop(message: str) -> None:
 def undo() -> None:
     '''Delete last start/stop time added'''
     lines = readlines()
-    assert len(lines) > 1, "Cannot 'undo' anymore, reached max undo!"
-
+    if len(lines) == 1:
+        print("Cannot 'undo' anymore, reached max undo!")
+        return
     data = lines[:-1]
     last_line = lines[-1]
 
