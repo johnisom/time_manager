@@ -46,19 +46,9 @@ Also, if you dont have the path `/usr/bin/python3`, update the shebang at the to
 
 ## TODOS
 
-* ~~Allow `VIEW` if currently in session. Will probably say 'Currently: ' instead
-  of 'Stopped: ' and show timestamp with no message.~~
-  Now says `Stop: [timestamp] -> "CURRENT"`
-* ~~Add docstrings to all functions without them~~
 * Create longer, better, and more descriptive docstrings for all functions
-* ~~Clean up all functions~~
 * Create a config function -- consult Adam for more info
-* ~~Refactor the crap out of everything -- needs a total rewrite nearly from scratch~~
 * Add more view options such as viewing average hours per week, etc
 * Add a GUI or GUI-looking thing when printing out to console
-* ~~__Add functionality to add messages to a `START` or `STOP` command__
-  Look at updated `help.txt` for info on how to use it. Still needs to be implemented
-  in code.~~
 * Add categories of what your time is going to, like coding, working out,
   reading, etc.
-* ~~Add typing~~
