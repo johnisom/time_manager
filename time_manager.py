@@ -136,7 +136,7 @@ def view(timeframe_from: Union[str, None], timeframe_to: Union[str, None]) -> No
     timeframe_to = 0 if timeframe_to is None else int(timeframe_to)
 
     idx_from, idx_to = indices_in_timeframe(
-        times, timeframe_from, timeframe_to)
+        times, *datetime_range(timeframe_from, timeframe_to))
     lines = lines[idx_from:idx_to]
     times = times[idx_from:idx_to]
 
@@ -144,12 +144,7 @@ def view(timeframe_from: Union[str, None], timeframe_to: Union[str, None]) -> No
     total_total_seconds = sum(diff_seconds)
     avg_total_seconds = total_total_seconds // (timeframe_from - timeframe_to)
 
-    if timeframe_to == 0:
-        print(f'\nShowing results for the past {timeframe_from} day(s)\n')
-    else:
-        print(f'\nShowing results from {timeframe_from}', end=' ')
-        print(f'days ago to {timeframe_to} day(s) ago\n')
-
+    display_timeframe(timeframe_from, timeframe_to)
     display_lines(lines, times)
     display('Average', avg_total_seconds, ' per day')
     display('Total', total_total_seconds)
@@ -181,6 +176,15 @@ def display(title: str, total_seconds: int,
     print(f'{title}: {hours:02}:{mins:02}:{secs:02}{trailer}')
 
 
+def display_timeframe(timeframe_from: int, timeframe_to: int) -> None:
+    '''Display info about timeframe'''
+    if timeframe_to == 0:
+        print(f'\nShowing results for the past {timeframe_from} day(s)\n')
+    else:
+        print(f'\nShowing results from {timeframe_from}', end=' ')
+        print(f'days ago to {timeframe_to} day(s) ago\n')
+
+
 def get_split_lines() -> List[List[List[str]]]:
     '''Get lines split into entry and message subcomponents'''
     lines = []
@@ -205,9 +209,24 @@ def get_times(lines: List[List[List[str]]]) -> List[List[datetime]]:
     return times
 
 
-def indices_in_timeframe(times: List[List[datetime]],
-                         timeframe_from: int, timeframe_to: int) -> int:
+def indices_in_timeframe(times: List[List[datetime]], datetime_from: datetime,
+                         datetime_to: datetime) -> int:
     '''Find indices that selects times from timeframe_from to timeframe_to'''
+    idx_from = 0
+    idx_to = 0
+    for start, end in times:
+        if start < datetime_from:
+            idx_from += 1
+        if end < datetime_to:
+            idx_to += 1
+        else:
+            break
+
+    return idx_from, idx_to
+
+
+def datetime_range(timeframe_from: int, timeframe_to: int) -> List[datetime]:
+    '''Get the timeframe as 2 datetimes'''
     today = datetime.now().date()
 
     from_days_ago = today - timedelta(days=int(timeframe_from) - 1)
@@ -217,18 +236,7 @@ def indices_in_timeframe(times: List[List[datetime]],
                                       from_days_ago.month, from_days_ago.day)
     to_days_ago_datetime = datetime(to_days_ago.year, to_days_ago.month,
                                     to_days_ago.day, 23, 59, 59)
-
-    idx_from = 0
-    idx_to = 0
-    for start, end in times:
-        if start < from_days_ago_datetime:
-            idx_from += 1
-        if end < to_days_ago_datetime:
-            idx_to += 1
-        else:
-            break
-
-    return idx_from, idx_to
+    return from_days_ago_datetime, to_days_ago_datetime
 
 
 def to_datetime(string: str) -> datetime:
