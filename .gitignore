@@ -1,6 +1,6 @@
-*/data.*
+users/*/data.*
 *nub*
 *~
 *#
 \#*#
-**/**/__pycache__/*
+lib/__pycache__
