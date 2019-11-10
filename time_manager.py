@@ -32,7 +32,8 @@ FORBIDDEN = [DELIMETER, MESSAGE_DELIM, EOL]
 def run(name: str, command: str, *args: List[str]) -> None:
     '''Run main program'''
     message = ''
-    timeframe = None
+    timeframe_from = None
+    timeframe_to = None
     command = command.upper()
     name = name.upper()
 
@@ -49,9 +50,13 @@ def run(name: str, command: str, *args: List[str]) -> None:
         write([f'START{DELIMETER}STOP{EOL}'])
 
     if len(args) == 1:
-        timeframe = args[0]
+        timeframe_from = args[0]
     elif len(args) == 2:
-        message = args[1]
+        if args[0].upper() == '-M':
+            message = args[1]
+        else:
+            timeframe_from = args[0]
+            timeframe_to = args[1]
 
     if command == 'START':
         start(message)
@@ -60,7 +65,7 @@ def run(name: str, command: str, *args: List[str]) -> None:
     elif command == 'UNDO':
         undo()
     elif command == 'VIEW':
-        view(timeframe)
+        view(timeframe_from, timeframe_to)
 
 
 def sanitize(text: str) -> str:
@@ -109,7 +114,7 @@ def undo() -> None:
     write(data)
 
 
-def view(timeframe: Union[str, None]) -> None:
+def view(timeframe_from: Union[str, None], timeframe_to: Union[str, None]) -> None:
     '''Output data and summaries for logged time'''
     lines = get_split_lines()
 
@@ -123,20 +128,28 @@ def view(timeframe: Union[str, None]) -> None:
         print('No data to report')
         return
 
-    if timeframe is None:
-        timeframe = (times[-1][0] - times[0][0]).days + 1
+    if timeframe_from is None or timeframe_from == '_':
+        timeframe_from = (times[-1][0] - times[0][0]).days + 1
     else:
-        timeframe = int(timeframe)
+        timeframe_from = int(timeframe_from)
 
-    idx = index_in_timeframe(times, timeframe)
-    lines = lines[idx:]
-    times = times[idx:]
+    timeframe_to = 0 if timeframe_to is None else int(timeframe_to)
+
+    idx_from, idx_to = indices_in_timeframe(
+        times, timeframe_from, timeframe_to)
+    lines = lines[idx_from:idx_to]
+    times = times[idx_from:idx_to]
 
     diff_seconds = [(stop - start).seconds for start, stop in times]
     total_total_seconds = sum(diff_seconds)
-    avg_total_seconds = total_total_seconds // timeframe
+    avg_total_seconds = total_total_seconds // (timeframe_from - timeframe_to)
 
-    print(f'\nShowing results for the past {timeframe} day(s)\n')
+    if timeframe_to == 0:
+        print(f'\nShowing results for the past {timeframe_from} day(s)\n')
+    else:
+        print(f'\nShowing results from {timeframe_from}', end=' ')
+        print(f'days ago to {timeframe_to} day(s) ago\n')
+
     display_lines(lines, times)
     display('Average', avg_total_seconds, ' per day')
     display('Total', total_total_seconds)
@@ -192,17 +205,30 @@ def get_times(lines: List[List[List[str]]]) -> List[List[datetime]]:
     return times
 
 
-def index_in_timeframe(times: List[List[datetime]], timeframe: int) -> int:
-    '''Find index that selects times in past timeframe days'''
+def indices_in_timeframe(times: List[List[datetime]],
+                         timeframe_from: int, timeframe_to: int) -> int:
+    '''Find indices that selects times from timeframe_from to timeframe_to'''
     today = datetime.now().date()
-    days_ago = today - timedelta(days=int(timeframe) - 1)
-    days_ago_datetime = datetime(days_ago.year, days_ago.month, days_ago.day)
-    idx = 0
-    for start, _ in times:
-        if start >= days_ago_datetime:
+
+    from_days_ago = today - timedelta(days=int(timeframe_from) - 1)
+    to_days_ago = today - timedelta(days=int(timeframe_to))
+
+    from_days_ago_datetime = datetime(from_days_ago.year,
+                                      from_days_ago.month, from_days_ago.day)
+    to_days_ago_datetime = datetime(to_days_ago.year, to_days_ago.month,
+                                    to_days_ago.day, 23, 59, 59)
+
+    idx_from = 0
+    idx_to = 0
+    for start, end in times:
+        if start < from_days_ago_datetime:
+            idx_from += 1
+        if end < to_days_ago_datetime:
+            idx_to += 1
+        else:
             break
-        idx += 1
-    return idx
+
+    return idx_from, idx_to
 
 
 def to_datetime(string: str) -> datetime:
@@ -249,16 +275,31 @@ def is_help(arg: str) -> bool:
 
 def is_view(args: List[str]) -> bool:
     '''Check if valid view command'''
-    if len(args) == 3:
-        if not is_valid_n(args[2]):
+    if len(args) >= 3:
+        if not is_valid_from(args[2]):
             return False
-    return (len(args) == 2 or len(args) == 3) and args[1].upper() == 'VIEW'
+    if len(args) == 4:
+        if not is_valid_to(args[3], args[2]):
+            return False
+    return (len(args) >= 2 and len(args) <= 4) and args[1].upper() == 'VIEW'
 
 
-def is_valid_n(arg: str) -> bool:
-    '''Check N is integer greater than 0'''
+def is_valid_from(arg: str) -> bool:
+    '''Check FROM is integer greater than 0 or underscore'''
     try:
-        return int(arg) > 0
+        return arg == '_' or int(arg) > 0
+    except ValueError:
+        return False
+
+
+def is_valid_to(to_arg: str, from_arg: str) -> bool:
+    '''Check TO is integer 0 or greater'''
+    try:
+        if from_arg == '_':
+            from_arg = int(to_arg) + 1
+        else:
+            from_arg = int(from_arg)
+        return int(to_arg) >= 0 and int(to_arg) < from_arg
     except ValueError:
         return False
 

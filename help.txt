@@ -1,6 +1,6 @@
 time_manager -- Usage:
 
-time_manager NAME START/STOP/UNDO/VIEW [N | [-m MESSAGE]]
+time_manager NAME START/STOP/UNDO/VIEW [[-m MESSAGE] | [FROM [TO]]]
 
 Where NAME is the name of the person checking in
 and START/STOP/UNDO is the word 'start', 'undo',
@@ -28,8 +28,16 @@ VIEW:
   You use this command to view the times and stats of
   your logged time.
 
-  N (INTEGER -> DAYS):
+  FROM (POSITIVE INTEGER || UNDERSCORE -> DAYS):
     Optional integer argument that can be used in
     combination with the VIEW command. It uses the past
     N days in its display of times and stats if supplied,
-    otherwise it shows the times and stats for all time.
+    if not provided or is an underscore it shows the times
+    and stats for all time.
+
+    TO (NON-NEGATIVE INTEGER -> DAYS):
+      Optional and can be used with FROM. If supplied, VIEW
+      will only show info from 'FROM days ago' to 'TO days ago'.
+      For example, if FROM and TO are provided and have values of
+      6 and 3, then data from 6 days ago to 3 days ago will be displayed.
+      If not provided, then TO defaults to 0.
