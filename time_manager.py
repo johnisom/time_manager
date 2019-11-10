@@ -6,14 +6,17 @@
 
 import sys
 import os
-import time
 from datetime import datetime, timedelta
 
 
 # from modules as part of project
-from constants import *
 from command_validation import *
-from display import *
+from display import display_help
+from constants import FILE_DEST, DELIMETER, EOL
+from view import view
+from undo import undo
+from start import start
+from stop import stop
 
 os.chdir(os.environ['HOME'] + '/time_manager')
 
@@ -55,170 +58,6 @@ def run(name: str, command: str, *args: List[str]) -> None:
         undo()
     elif command == 'VIEW':
         view(timeframe_from, timeframe_to)
-
-
-def sanitize(text: str) -> str:
-    '''Replace forbidden character sequences'''
-    for forbidden in FORBIDDEN:
-        text = text.replace(forbidden, DELIM_REPLACEMENT)
-    return text
-
-
-def start(message: str) -> None:
-    '''Add start time'''
-    if last_start(readlines()[-1]):
-        print("Cannot 'start' twice in a row!")
-        return
-    message = sanitize(message)
-    with open(FILE_DEST, 'a') as f:
-        f.write(f'{datetime.now().strftime(TIME_FORMAT_PATTERN)}'
-                f'{MESSAGE_DELIM}{message}{DELIMETER}')
-
-
-def stop(message: str) -> None:
-    '''Add stop time'''
-    if last_stop(readlines()[-1]):
-        print("Cannot 'stop' twice in a row!")
-        return
-    message = sanitize(message)
-    with open(FILE_DEST, 'a') as f:
-        f.write(f'{datetime.now().strftime(TIME_FORMAT_PATTERN)}'
-                f'{MESSAGE_DELIM}{message}{EOL}')
-
-
-def undo() -> None:
-    '''Delete last start/stop time added'''
-    lines = readlines()
-    if len(lines) == 1:
-        print("Cannot 'undo' anymore, reached max undo!")
-        return
-    data = lines[:-1]
-    last_line = lines[-1]
-
-    if last_stop(last_line):
-        data.append(last_line.split(DELIMETER)[0] + DELIMETER)
-
-    # rewrite data.csv with all the previous data
-    # except the last start/stop time
-    write(data)
-
-
-def view(timeframe_from: Union[str, None], timeframe_to: Union[str, None]) -> None:
-    '''Output data and summaries for logged time'''
-    lines = get_split_lines()
-
-    # Use current time as end time if no end time
-    if last_start(readlines()[-1]):
-        now_formatted = datetime.now().strftime(TIME_FORMAT_PATTERN)
-        lines[-1][1] = [now_formatted, 'CURRENT']
-
-    times = get_times(lines)
-    if not times:
-        print('No data to report')
-        return
-
-    if timeframe_from is None or timeframe_from == '_':
-        timeframe_from = (times[-1][0] - times[0][0]).days + 1
-    else:
-        timeframe_from = int(timeframe_from)
-
-    timeframe_to = 0 if timeframe_to is None else int(timeframe_to)
-
-    idx_from, idx_to = indices_in_timeframe(
-        times, *datetime_range(timeframe_from, timeframe_to))
-    lines = lines[idx_from:idx_to]
-    times = times[idx_from:idx_to]
-
-    diff_seconds = [(stop - start).seconds for start, stop in times]
-    total_total_seconds = sum(diff_seconds)
-    avg_total_seconds = total_total_seconds // (timeframe_from - timeframe_to)
-
-    display_timeframe(timeframe_from, timeframe_to)
-    display_lines(lines, times)
-    display('Average', avg_total_seconds, ' per day')
-    display('Total', total_total_seconds)
-
-
-def get_split_lines() -> List[List[List[str]]]:
-    '''Get lines split into entry and message subcomponents'''
-    lines = []
-    # [[[entry, message], [entry, message]],
-    #  [[entry, message], [entry, message]], etc.]
-    for line in readlines()[1:]:
-        start, stop = line.strip(EOL).split(DELIMETER)
-        start = start.split(MESSAGE_DELIM)
-        stop = stop.split(MESSAGE_DELIM)
-        lines.append([start, stop])
-    return lines
-
-
-def get_times(lines: List[List[List[str]]]) -> List[List[datetime]]:
-    '''From split lines create sublists of start and stop datetime objects'''
-    # [[datetime, datetime], [datetime, datetime], etc.]
-    times = []
-    for start, stop in lines:
-        start = to_datetime(start[0])
-        stop = to_datetime(stop[0])
-        times.append([start, stop])
-    return times
-
-
-def indices_in_timeframe(times: List[List[datetime]], datetime_from: datetime,
-                         datetime_to: datetime) -> int:
-    '''Find indices that selects times from timeframe_from to timeframe_to'''
-    idx_from = 0
-    idx_to = 0
-    for start, end in times:
-        if start < datetime_from:
-            idx_from += 1
-        if end < datetime_to:
-            idx_to += 1
-        else:
-            break
-
-    return idx_from, idx_to
-
-
-def datetime_range(timeframe_from: int, timeframe_to: int) -> List[datetime]:
-    '''Get the timeframe as 2 datetimes'''
-    today = datetime.now().date()
-
-    from_days_ago = today - timedelta(days=int(timeframe_from) - 1)
-    to_days_ago = today - timedelta(days=int(timeframe_to))
-
-    from_days_ago_datetime = datetime(from_days_ago.year,
-                                      from_days_ago.month, from_days_ago.day)
-    to_days_ago_datetime = datetime(to_days_ago.year, to_days_ago.month,
-                                    to_days_ago.day, 23, 59, 59)
-    return from_days_ago_datetime, to_days_ago_datetime
-
-
-def to_datetime(string: str) -> datetime:
-    '''Convert str to datetime'''
-    return datetime.strptime(string, TIME_FORMAT_PATTERN)
-
-
-def readlines() -> List[str]:
-    '''Get data from data storage'''
-    with open(FILE_DEST) as f:
-        return f.readlines()
-
-
-def write(lines: List[str]) -> None:
-    '''Write data to data storage'''
-    with open(FILE_DEST, 'w') as f:
-        for line in lines:
-            f.write(line)
-
-
-def last_stop(line: str) -> bool:
-    '''Determine if last time added to line was a stop time'''
-    return line[-1] == EOL
-
-
-def last_start(line: str) -> bool:
-    '''Determine if last time added to line was a start time'''
-    return line[-1] == DELIMETER
 
 
 if __name__ == "__main__":
