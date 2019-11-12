@@ -4,7 +4,7 @@ from typing import Union
 
 from .helpers import (get_split_lines, last_start, get_times,
                      indices_in_timeframe, datetime_range, readlines)
-from .display import display, display_lines, display_timeframe
+from .display import display, display_lines, display_timeframe, display_help
 from .constants import TIME_FORMAT_PATTERN
 
 
@@ -28,6 +28,10 @@ def view(timeframe_from: Union[str, None], timeframe_to: Union[str, None]) -> No
         timeframe_from = int(timeframe_from)
 
     timeframe_to = 0 if timeframe_to is None else int(timeframe_to)
+
+    if timeframe_from <= timeframe_to:
+        display_help()
+        return
 
     idx_from, idx_to = indices_in_timeframe(
         times, *datetime_range(timeframe_from, timeframe_to))
