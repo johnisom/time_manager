@@ -27,16 +27,21 @@ if __name__ == "__main__":
         tmp_path = os.environ['HOME'] + '/time_manager/tmp'
         if not os.path.isdir(tmp_path):
             os.mkdir(tmp_path)
+
         sys.stdout = open(tmp_path + '/stdout.txt', 'w')
+
         run(*args)
+
         sys.stdout.close()
         sys.stdout = sys.__stdout__
+
         with open(tmp_path + '/stdout.txt') as stdout:
             lines = stdout.readlines()
+            content = ''.join(lines)
             if len(lines) <= os.get_terminal_size().lines:
-                for line in lines:
-                    print(line, end='')
+                print(content, end='')
             else:
-                subprocess.run(['less'], input=''.join(lines).encode('ascii'))
+                subprocess.run(['less'], input=content.encode('ascii'))
+
         os.remove(tmp_path + '/stdout.txt')
         os.rmdir(tmp_path)
