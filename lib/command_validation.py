@@ -10,7 +10,30 @@ def is_help(arg: str) -> bool:
 
 
 def is_view(args: List[str]) -> bool:
-    """Check if valid view command."""
+    """
+    Check if valid view command.
+
+    A view command is valid if the command VIEW is supplied, 2-4 arguments
+    are supplied, and the (optional) 3rd and 4th are valid timeframe ranges.
+
+    Examples:
+        ['NAME', 'VIEW', 5, 2] are valid arguments for VIEW because they are
+        4 long, VIEW is supplied, and 5 days ago to 2 days ago is a valid
+        range.
+
+        ['NAME', 'MESSAGE', 5, 2] are invalid arguments because VIEW is not
+        supplied.
+
+        ['NAME', 'VIEW'] are valid arguments because they are 2 long and VIEW
+        is supplied.
+
+        ['NAME', 'VIEW', 3, 6] are invalid arguments because 3 days ago to 6
+        days ago is an invalid range (cannot go backwards).
+
+        ['NAME', 'VIEW', _, 3] are valid arguments only if there are more than
+        3 days of history becuase _ will be interpreted as the earliest day on
+        record.
+    """
     if len(args) >= 3:
         if not is_valid_from(args[2]):
             return False
@@ -29,7 +52,7 @@ def is_valid_from(arg: str) -> bool:
 
 
 def is_valid_to(to_arg: str, from_arg: str) -> bool:
-    """Check TO is integer 0 or greater."""
+    """Check TO is valid compared to itself and to FROM."""
     try:
         if from_arg == '_':
             from_arg = int(to_arg) + 1
@@ -56,7 +79,7 @@ def is_undo(args: List[str]) -> bool:
 
 
 def is_message(args: List[str]) -> bool:
-    """Check if message supplied with start/stop command."""
+    """Check if message is supplied with START/STOP command."""
     try:
         flag = args[2].lower()
     except IndexError:

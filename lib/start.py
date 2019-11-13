@@ -9,6 +9,7 @@ def start(message: str) -> None:
     if last_start(readlines()[-1]):
         print("Cannot 'start' twice in a row!")
         return
+
     message = sanitize(message)
     with open(FILE_DEST, 'a') as f:
         f.write(f'{datetime.now().strftime(TIME_FORMAT_PATTERN)}'

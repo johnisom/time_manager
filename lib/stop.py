@@ -9,6 +9,7 @@ def stop(message: str) -> None:
     if last_stop(readlines()[-1]):
         print("Cannot 'stop' twice in a row!")
         return
+
     message = sanitize(message)
     with open(FILE_DEST, 'a') as f:
         f.write(f'{datetime.now().strftime(TIME_FORMAT_PATTERN)}'

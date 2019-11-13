@@ -3,8 +3,10 @@ from typing import Union
 
 
 from .helpers import (get_split_lines, last_start, get_times,
-                      indices_in_timeframe, datetime_range, readlines)
-from .display import display, display_lines, display_timeframe, display_help
+                      indices_in_timeframe, datetime_range, readlines,
+                      convert_timeframes)
+from .display import (display_summary, display_lines, display_timeframe,
+                      display_help)
 from .constants import TIME_FORMAT_PATTERN
 
 
@@ -23,12 +25,8 @@ def view(timeframe_from: Union[str, None],
         print('No data to report')
         return
 
-    if timeframe_from is None or timeframe_from == '_':
-        timeframe_from = (times[-1][0] - times[0][0]).days + 1
-    else:
-        timeframe_from = int(timeframe_from)
-
-    timeframe_to = 0 if timeframe_to is None else int(timeframe_to)
+    timeframes = convert_timeframes(timeframe_from, timeframe_to, times)
+    timeframe_from, timeframe_to = timeframes
 
     if timeframe_from <= timeframe_to:
         display_help()
@@ -45,5 +43,5 @@ def view(timeframe_from: Union[str, None],
 
     display_timeframe(timeframe_from, timeframe_to)
     display_lines(lines, times)
-    display('Average', avg_total_seconds, ' per day')
-    display('Total', total_total_seconds)
+    display_summary('Average', avg_total_seconds, ' per day')
+    display_summary('Total', total_total_seconds)

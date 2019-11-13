@@ -22,7 +22,7 @@ def run(name: str, command: str, *args: List[str]) -> None:
 
     os.chdir(name)
 
-    # checks to see if the data.csv file exists,
+    # checks to see if the data file exists,
     # and if it doesn't, it creates the file
     if not os.path.isfile(FILE_DEST):
         write([f'START{DELIMETER}STOP{EOL}'])

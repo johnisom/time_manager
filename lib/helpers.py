@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from typing import List, Union
+from typing import List, Union, Tuple
 import os
 import subprocess
 
@@ -98,7 +98,8 @@ def last_start(line: str) -> bool:
     return line[-1] == DELIMETER
 
 
-def parse_args(args: List[str]) -> List[Union[str, None]]:
+def parse_args(args: List[str]) -> Tuple[Union[str, None]]:
+    """Parse/split a list of arguments into their components."""
     timeframe_from = None
     timeframe_to = None
     message = ''
@@ -125,3 +126,17 @@ def output_everything() -> None:
             print(content, end='')
         else:
             subprocess.run(['less'], input=less_content.encode('ascii'))
+
+
+def convert_timeframes(timeframe_from: Union[str, None],
+                       timeframe_to: Union[str, None],
+                       times: List[List[datetime]]) -> Tuple[int]:
+    """Convert timeframes from str or None into integers."""
+    if timeframe_from is None or timeframe_from == '_':
+        timeframe_from = (times[-1][0] - times[0][0]).days + 1
+    else:
+        timeframe_from = int(timeframe_from)
+
+    timeframe_to = 0 if timeframe_to is None else int(timeframe_to)
+
+    return timeframe_from, timeframe_to

@@ -8,12 +8,10 @@ def undo() -> None:
     if len(lines) == 1:
         print("Cannot 'undo' anymore, reached max undo!")
         return
+
     data = lines[:-1]
     last_line = lines[-1]
-
     if last_stop(last_line):
         data.append(last_line.split(DELIMETER)[0] + DELIMETER)
 
-    # rewrite data.csv with all the previous data
-    # except the last start/stop time
-    write(data)
+    write(data)  # rewrite data file with all previous data except last entry
