@@ -103,7 +103,7 @@ def parse_args(args: List[str]) -> List[Union[str, None]]:
     if len(args) == 1:
         timeframe_from = args[0]
     elif len(args) == 2:
-        if args[0].upper() == '-M':
+        if args[0] == '-m' or args[0] == '--message':
             message = args[1]
         else:
             timeframe_from = args[0]

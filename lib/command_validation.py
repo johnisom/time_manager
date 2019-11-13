@@ -57,7 +57,12 @@ def is_undo(args: List[str]) -> bool:
 
 def is_message(args: List[str]) -> bool:
     '''Check if message supplied with start/stop command'''
-    return len(args) == 4 and args[2].upper() == '-M'
+    try:
+        flag = args[2].lower()
+    except IndexError:
+        return False
+
+    return len(args) == 4 and flag == '-m' or flag == '--message'
 
 
 def is_all_alpha(name: str) -> bool:
@@ -67,6 +72,5 @@ def is_all_alpha(name: str) -> bool:
 
 def is_valid(args: List[str]) -> bool:
     '''Check if format of arguments is correct as specified in help.txt'''
-
     return (is_start(args) or is_stop(args) or
             is_view(args) or is_undo(args)) and is_all_alpha(args[0])
