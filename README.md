@@ -24,7 +24,7 @@ cd ~
 git clone https://github.com/johnisom/time_manager.git
 ```
 
-Then, in your `~/.bashrc` or `~/.bash_profile`, create an alias
+Then, in your `~/.bashrc`, `~/.bash_aliases` or `~/.bash_profile`, create an alias
 like so:
 
 ```bash
