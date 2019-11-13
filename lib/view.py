@@ -3,12 +3,13 @@ from typing import Union
 
 
 from .helpers import (get_split_lines, last_start, get_times,
-                     indices_in_timeframe, datetime_range, readlines)
+                      indices_in_timeframe, datetime_range, readlines)
 from .display import display, display_lines, display_timeframe, display_help
 from .constants import TIME_FORMAT_PATTERN
 
 
-def view(timeframe_from: Union[str, None], timeframe_to: Union[str, None]) -> None:
+def view(timeframe_from: Union[str, None],
+         timeframe_to: Union[str, None]) -> None:
     """Output data and summaries for logged time."""
     lines = get_split_lines()
 

@@ -3,8 +3,8 @@ from typing import List, Union
 
 
 from .constants import (FORBIDDEN, DELIM_REPLACEMENT, EOL,
-                       DELIMETER, MESSAGE_DELIM, FILE_DEST,
-                       TIME_FORMAT_PATTERN)
+                        DELIMETER, MESSAGE_DELIM, FILE_DEST,
+                        TIME_FORMAT_PATTERN)
 
 
 def sanitize(text: str) -> str:
@@ -95,6 +95,7 @@ def last_start(line: str) -> bool:
     """Determine if last time added to line was a start time."""
     return line[-1] == DELIMETER
 
+
 def parse_args(args: List[str]) -> List[Union[str, None]]:
     timeframe_from = None
     timeframe_to = None
@@ -110,3 +111,15 @@ def parse_args(args: List[str]) -> List[Union[str, None]]:
             timeframe_to = args[1]
 
     return timeframe_from, timeframe_to, message
+
+
+def output_everything() -> None:
+    """Output all standard output to stdout or less."""
+    with open(PATH_TO_STDOUT) as stdout:
+        lines = stdout.readlines()
+        less_content = '\n  ' + '  '.join(lines)
+        content = ''.join(lines)
+        if len(lines) <= os.get_terminal_size().lines:
+            print(content, end='')
+        else:
+            subprocess.run(['less'], input=less_content.encode('ascii'))
