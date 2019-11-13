@@ -11,7 +11,7 @@ import os
 from lib.run import run
 from lib.display import display_help
 from lib.command_validation import is_valid, is_help
-from lib.constants import PATH_TO_USERS
+from lib.constants import PATH_TO_USERS, PATH_TO_STDOUT
 
 if __name__ == "__main__":
     # gets the arguments passed in when run as a script/command
@@ -24,18 +24,17 @@ if __name__ == "__main__":
     if not is_valid(args) or is_help(args[0]):
         display_help()
     else:
-        tmp_path = os.environ['HOME'] + '/time_manager/tmp'
         if not os.path.isdir(tmp_path):
             os.mkdir(tmp_path)
 
-        sys.stdout = open(tmp_path + '/stdout.txt', 'w')
+        sys.stdout = open(PATH_TO_STDOUT, 'w')
 
         run(*args)
 
         sys.stdout.close()
         sys.stdout = sys.__stdout__
 
-        with open(tmp_path + '/stdout.txt') as stdout:
+        with open(PATH_TO_STDOUT) as stdout:
             lines = stdout.readlines()
             content = ''.join(lines)
             if len(lines) <= os.get_terminal_size().lines:
@@ -43,5 +42,5 @@ if __name__ == "__main__":
             else:
                 subprocess.run(['less'], input=content.encode('ascii'))
 
-        os.remove(tmp_path + '/stdout.txt')
+        os.remove(PATH_TO_STDOUT)
         os.rmdir(tmp_path)
