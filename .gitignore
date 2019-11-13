@@ -3,5 +3,5 @@ users/*/data.*
 *~
 *#
 \#*#
-lib/__pycache__
+**/__pycache__
 .vscode
