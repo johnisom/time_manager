@@ -4,3 +4,4 @@ users/*/data.*
 *#
 \#*#
 lib/__pycache__
+.vscode
