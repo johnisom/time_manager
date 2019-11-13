@@ -17,6 +17,8 @@ __Check out help.txt for help.__
 
 ## Installation
 
+### MacOS/Linux
+
 In your home directory, clone this repo into it like so:
 
 ```bash
@@ -40,7 +42,12 @@ alias tm="~/time_manager/time_manager.py"
 Then after that alias is loaded (ex. `$ source ~/.bashrc`), you can call the
 `time_manager` program from anywhere.
 
-### Dependencies
+### Windows
+
+Not quite there yet. Unless you have WSL, of course. If that's the case, follow
+the above instructions from your bash terminal.
+
+## Dependencies
 
 This relies on python 3.6 or greater (uses f-strings), so make sure you have that installed.
 Also, if you dont have the path `/usr/bin/python3`, update the shebang at the top of
@@ -50,10 +57,11 @@ Also, if you dont have the path `/usr/bin/python3`, update the shebang at the to
 
 * Create longer, better, and more descriptive docstrings for all functions
 * Port from *NIX based to cross-platform compatible (Windows/DOS and *NIX)
-* Add more view options such as viewing average hours per week, etc
-* Add a GUI or GUI-looking thing when printing out to console
+* Add more view options such as viewing average hours per week, etc.
+  See *display functions* below.
 * Add categories of what your time is going to, like coding, working out,
-  reading, etc.
+  reading, etc. Will require overhaul of all data structures and processes.
+  Very low priority.
 * Add colored output
 * Display functions
   1) *Daily digest*: `--daily-digest`  
