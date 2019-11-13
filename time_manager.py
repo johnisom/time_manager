@@ -11,7 +11,7 @@ import os
 from lib.run import run
 from lib.display import display_help
 from lib.command_validation import is_valid, is_help
-from lib.constants import PATH_TO_USERS, PATH_TO_STDOUT
+from lib.constants import PATH_TO_USERS, PATH_TO_STDOUT, PATH_TO_TMP
 
 if __name__ == "__main__":
     # gets the arguments passed in when run as a script/command
@@ -24,8 +24,8 @@ if __name__ == "__main__":
     if not is_valid(args) or is_help(args[0]):
         display_help()
     else:
-        if not os.path.isdir(tmp_path):
-            os.mkdir(tmp_path)
+        if not os.path.isdir(PATH_TO_TMP):
+            os.mkdir(PATH_TO_TMP)
 
         sys.stdout = open(PATH_TO_STDOUT, 'w')
 
@@ -43,4 +43,4 @@ if __name__ == "__main__":
                 subprocess.run(['less'], input=content.encode('ascii'))
 
         os.remove(PATH_TO_STDOUT)
-        os.rmdir(tmp_path)
+        os.rmdir(PATH_TO_TMP)

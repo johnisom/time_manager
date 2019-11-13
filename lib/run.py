@@ -3,7 +3,7 @@ from typing import List
 
 
 from .constants import FILE_DEST, DELIMETER, EOL
-from .helpers import write
+from .helpers import write, parse_args
 from .view import view
 from .undo import undo
 from .start import start
@@ -12,11 +12,8 @@ from .stop import stop
 
 def run(name: str, command: str, *args: List[str]) -> None:
     '''Run main program'''
-    message = ''
-    timeframe_from = None
-    timeframe_to = None
-    command = command.upper()
     name = name.upper()
+    command = command.upper()
 
     # checks to see if the directory f'{name}' exists,
     # and if it doesn't it creates the dir
@@ -30,14 +27,7 @@ def run(name: str, command: str, *args: List[str]) -> None:
     if not os.path.isfile(FILE_DEST):
         write([f'START{DELIMETER}STOP{EOL}'])
 
-    if len(args) == 1:
-        timeframe_from = args[0]
-    elif len(args) == 2:
-        if args[0].upper() == '-M':
-            message = args[1]
-        else:
-            timeframe_from = args[0]
-            timeframe_to = args[1]
+    timeframe_from, timeframe_to, message = parse_args(args)
 
     if command == 'START':
         start(message)

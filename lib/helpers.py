@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from typing import List
+from typing import List, Union
 
 
 from .constants import (FORBIDDEN, DELIM_REPLACEMENT, EOL,
@@ -94,3 +94,19 @@ def last_stop(line: str) -> bool:
 def last_start(line: str) -> bool:
     '''Determine if last time added to line was a start time'''
     return line[-1] == DELIMETER
+
+def parse_args(args: List[str]) -> List[Union[str, None]]:
+    timeframe_from = None
+    timeframe_to = None
+    message = ''
+
+    if len(args) == 1:
+        timeframe_from = args[0]
+    elif len(args) == 2:
+        if args[0].upper() == '-M':
+            message = args[1]
+        else:
+            timeframe_from = args[0]
+            timeframe_to = args[1]
+
+    return timeframe_from, timeframe_to, message
