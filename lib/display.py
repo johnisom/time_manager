@@ -8,7 +8,7 @@ from .constants import SEC_IN_MIN, SEC_IN_HOUR, PATH_TO_HELP
 
 def display_lines(lines: List[List[List[str]]],
                   times: List[List[datetime]]) -> None:
-    '''Display start times, stop times, messages, and session times'''
+    """Display start times, stop times, messages, and session times."""
     for idx, (start, stop) in enumerate(lines):
         start_message = start[1]
         stop_message = stop[1]
@@ -25,7 +25,7 @@ def display_lines(lines: List[List[List[str]]],
 
 def display(title: str, total_seconds: int,
             trailer: Optional[str] = '') -> None:
-    '''Display line of time'''
+    """Display line of time."""
     secs = total_seconds % SEC_IN_MIN
     mins = total_seconds // SEC_IN_MIN % SEC_IN_MIN
     hours = total_seconds // SEC_IN_HOUR % SEC_IN_MIN
@@ -33,7 +33,7 @@ def display(title: str, total_seconds: int,
 
 
 def display_timeframe(timeframe_from: int, timeframe_to: int) -> None:
-    '''Display info about timeframe'''
+    """Display info about timeframe."""
     if timeframe_to == 0:
         print(f'\nShowing results for the past {timeframe_from} day(s)\n')
     else:
@@ -42,6 +42,6 @@ def display_timeframe(timeframe_from: int, timeframe_to: int) -> None:
 
 
 def display_help() -> None:
-    '''Output help.txt to the console'''
+    """Output help.txt to the console."""
     with open(PATH_TO_HELP) as f:
         print(f.read())

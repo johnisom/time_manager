@@ -9,7 +9,7 @@ from .constants import TIME_FORMAT_PATTERN
 
 
 def view(timeframe_from: Union[str, None], timeframe_to: Union[str, None]) -> None:
-    '''Output data and summaries for logged time'''
+    """Output data and summaries for logged time."""
     lines = get_split_lines()
 
     # Use current time as end time if no end time

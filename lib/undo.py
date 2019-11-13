@@ -3,7 +3,7 @@ from .constants import DELIMETER
 
 
 def undo() -> None:
-    '''Delete last start/stop time added'''
+    """Delete last start/stop time added."""
     lines = readlines()
     if len(lines) == 1:
         print("Cannot 'undo' anymore, reached max undo!")

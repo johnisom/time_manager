@@ -5,7 +5,7 @@ from .constants import FILE_DEST, TIME_FORMAT_PATTERN, MESSAGE_DELIM, DELIMETER
 
 
 def start(message: str) -> None:
-    '''Add start time'''
+    """Add start time."""
     if last_start(readlines()[-1]):
         print("Cannot 'start' twice in a row!")
         return

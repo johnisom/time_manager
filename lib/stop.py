@@ -5,7 +5,7 @@ from .constants import FILE_DEST, TIME_FORMAT_PATTERN, MESSAGE_DELIM, EOL
 
 
 def stop(message: str) -> None:
-    '''Add stop time'''
+    """Add stop time."""
     if last_stop(readlines()[-1]):
         print("Cannot 'stop' twice in a row!")
         return

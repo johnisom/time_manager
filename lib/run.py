@@ -11,7 +11,7 @@ from .stop import stop
 
 
 def run(name: str, command: str, *args: List[str]) -> None:
-    '''Run main program'''
+    """Run main program."""
     name = name.upper()
     command = command.upper()
 

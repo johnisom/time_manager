@@ -8,14 +8,14 @@ from .constants import (FORBIDDEN, DELIM_REPLACEMENT, EOL,
 
 
 def sanitize(text: str) -> str:
-    '''Replace forbidden character sequences'''
+    """Replace forbidden character sequences."""
     for forbidden in FORBIDDEN:
         text = text.replace(forbidden, DELIM_REPLACEMENT)
     return text
 
 
 def get_split_lines() -> List[List[List[str]]]:
-    '''Get lines split into entry and message subcomponents'''
+    """Get lines split into entry and message subcomponents."""
     lines = []
     # [[[entry, message], [entry, message]],
     #  [[entry, message], [entry, message]], etc.]
@@ -28,7 +28,7 @@ def get_split_lines() -> List[List[List[str]]]:
 
 
 def get_times(lines: List[List[List[str]]]) -> List[List[datetime]]:
-    '''From split lines create sublists of start and stop datetime objects'''
+    """From split lines create sublists of start and stop datetime objects."""
     # [[datetime, datetime], [datetime, datetime], etc.]
     times = []
     for start, stop in lines:
@@ -40,7 +40,7 @@ def get_times(lines: List[List[List[str]]]) -> List[List[datetime]]:
 
 def indices_in_timeframe(times: List[List[datetime]], datetime_from: datetime,
                          datetime_to: datetime) -> int:
-    '''Find indices that selects times from timeframe_from to timeframe_to'''
+    """Find indices that selects times from timeframe_from to timeframe_to."""
     idx_from = 0
     idx_to = 0
     for start, end in times:
@@ -55,7 +55,7 @@ def indices_in_timeframe(times: List[List[datetime]], datetime_from: datetime,
 
 
 def datetime_range(timeframe_from: int, timeframe_to: int) -> List[datetime]:
-    '''Get the timeframe as 2 datetimes'''
+    """Get the timeframe as 2 datetimes."""
     today = datetime.now().date()
 
     from_days_ago = today - timedelta(days=int(timeframe_from) - 1)
@@ -69,30 +69,30 @@ def datetime_range(timeframe_from: int, timeframe_to: int) -> List[datetime]:
 
 
 def to_datetime(string: str) -> datetime:
-    '''Convert str to datetime'''
+    """Convert str to datetime."""
     return datetime.strptime(string, TIME_FORMAT_PATTERN)
 
 
 def readlines() -> List[str]:
-    '''Get data from data storage'''
+    """Get data from data storage."""
     with open(FILE_DEST) as f:
         return f.readlines()
 
 
 def write(lines: List[str]) -> None:
-    '''Write data to data storage'''
+    """Write data to data storage."""
     with open(FILE_DEST, 'w') as f:
         for line in lines:
             f.write(line)
 
 
 def last_stop(line: str) -> bool:
-    '''Determine if last time added to line was a stop time'''
+    """Determine if last time added to line was a stop time."""
     return line[-1] == EOL
 
 
 def last_start(line: str) -> bool:
-    '''Determine if last time added to line was a start time'''
+    """Determine if last time added to line was a start time."""
     return line[-1] == DELIMETER
 
 def parse_args(args: List[str]) -> List[Union[str, None]]:
