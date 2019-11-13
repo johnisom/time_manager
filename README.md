@@ -56,16 +56,16 @@ Also, if you dont have the path `/usr/bin/python3`, update the shebang at the to
   reading, etc.
 * Add colored output
 * Display functions
-  1) *Daily digest*: `--daily-digest`
+  1) *Daily digest*: `--daily-digest`  
      Show only the total times for each day, and then a whole average of that.
      No individual sessions, session times, or messages.
-  2) *Day delimited*: `--day-delimited`
+  2) *Day delimited*: `--day-delimited`  
      Normal mixed with daily digest. Dislpays session times as normal, but with
      delimeters ('===', '---', or '=-=-=') between days with total daily time at the end.
-  3) *Weekly digest*: `--weekly-digest`
+  3) *Weekly digest*: `--weekly-digest`  
      Show only the total times for each week, and then a whole average of that.
      No individual days or sessions, etc.
-  4) *Week delimited*: `--week-delimited`
+  4) *Week delimited*: `--week-delimited`  
      Like day delimeted, but instead of showing sessions between delimiters, it shows
      all of the daily digests delimeted by week. Basically daily digest delimited by week
      (Monday thru Sunday).
