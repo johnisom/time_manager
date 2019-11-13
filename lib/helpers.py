@@ -1,10 +1,12 @@
 from datetime import datetime, timedelta
 from typing import List, Union
+import os
+import subprocess
 
 
 from .constants import (FORBIDDEN, DELIM_REPLACEMENT, EOL,
                         DELIMETER, MESSAGE_DELIM, FILE_DEST,
-                        TIME_FORMAT_PATTERN)
+                        TIME_FORMAT_PATTERN, PATH_TO_STDOUT)
 
 
 def sanitize(text: str) -> str:

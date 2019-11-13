@@ -12,13 +12,12 @@ See help.txt and README.md for more info.
 # to a version of python 3.6 or greater.
 
 import sys
-import subprocess
 import os
 
 from lib.run import run
 from lib.display import display_help
 from lib.command_validation import is_valid, is_help
-from lib.helpers import output_everything()
+from lib.helpers import output_everything
 from lib.constants import PATH_TO_USERS, PATH_TO_STDOUT, PATH_TO_TMP
 
 if __name__ == "__main__":
