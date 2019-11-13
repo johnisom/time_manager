@@ -1,11 +1,11 @@
-time_manager -- Usage:
-
-time_manager NAME START/STOP/UNDO/VIEW [[-m MESSAGE] | [FROM [TO]]]
+Usage:
+  time_manager NAME <command> [-m MESSAGE | FROM (TO)]
 
 Where NAME is the name of the person checking in
-and START/STOP/UNDO is the word 'start', 'undo',
-'view', or 'stop' (uppercase or lowercase, it
-doesn't matter as this program is case insensitive).
+and <command> is one of START, STOP, UNDO, or VIEW,
+the 4 available commands.
+
+Input and commands are case insensitive, except for MESSAGE
 
 START:
   You use this command once you have started studying.
