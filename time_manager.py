@@ -20,27 +20,25 @@ if __name__ == "__main__":
 
     os.chdir(PATH_TO_USERS)
 
+    if not os.path.isdir(PATH_TO_TMP):
+        os.mkdir(PATH_TO_TMP)
+
+    sys.stdout = open(PATH_TO_STDOUT, 'w')
+
     # checks whether to display help or to run the script
-    if not is_valid(args) or is_help(args[0]):
-        display_help()
-    else:
-        if not os.path.isdir(PATH_TO_TMP):
-            os.mkdir(PATH_TO_TMP)
+    display_help() if not is_valid(args) or is_help(args[0]) else run(*args)
 
-        sys.stdout = open(PATH_TO_STDOUT, 'w')
+    sys.stdout.close()
+    sys.stdout = sys.__stdout__
 
-        run(*args)
+    with open(PATH_TO_STDOUT) as stdout:
+        lines = stdout.readlines()
+        less_content = '\n  ' + '  '.join(lines)
+        content = ''.join(lines)
+        if len(lines) <= os.get_terminal_size().lines:
+            print(content, end='')
+        else:
+            subprocess.run(['less'], input=less_content.encode('ascii'))
 
-        sys.stdout.close()
-        sys.stdout = sys.__stdout__
-
-        with open(PATH_TO_STDOUT) as stdout:
-            lines = stdout.readlines()
-            content = ''.join(lines)
-            if len(lines) <= os.get_terminal_size().lines:
-                print(content, end='')
-            else:
-                subprocess.run(['less'], input=content.encode('ascii'))
-
-        os.remove(PATH_TO_STDOUT)
-        os.rmdir(PATH_TO_TMP)
+    os.remove(PATH_TO_STDOUT)
+    os.rmdir(PATH_TO_TMP)
