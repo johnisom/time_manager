@@ -49,8 +49,23 @@ Also, if you dont have the path `/usr/bin/python3`, update the shebang at the to
 ## TODOS
 
 * Create longer, better, and more descriptive docstrings for all functions
-* Create a config function -- consult Adam for more info
+* Port from *NIX based to cross-platform compatible (Windows/DOS and *NIX)
 * Add more view options such as viewing average hours per week, etc
 * Add a GUI or GUI-looking thing when printing out to console
 * Add categories of what your time is going to, like coding, working out,
   reading, etc.
+* Add colored output
+* Display functions
+  1) Daily digest
+     Show only the total times for each day, and then a whole average of that.
+     No individual sessions, session times, or messages.
+  2) Day delimited
+     Normal mixed with daily digest. Dislpays session times as normal, but with
+     delimeters ('===', '---', or '=-=-=') between days with total daily time at the end.
+  3) Weekly digest
+     Show only the total times for each week, and then a whole average of that.
+     No individual days or sessions, etc.
+  4) Week delimited
+     Like day delimeted, but instead of showing sessions between delimiters, it shows
+     all of the daily digests delimeted by week. Basically daily digest delimited by week
+     (Monday thru Sunday).
