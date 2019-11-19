@@ -62,20 +62,20 @@ Also, if you dont have the path `/usr/bin/python3`, update the shebang at the to
   reading, etc. Will require overhaul of all data structures and processes.
   Very low priority.
 * Display functions
-  1) *Daily digest*: `--daily-digest`
+  1) *Daily digest*: `--daily-digest`  
      Show only the total times for each day, and then a whole average of that.
      No individual sessions, session times, or messages.
-  2) *Day delimited*: `--day-delimited`
+  2) *Day delimited*: `--day-delimited`  
      Normal mixed with daily digest. Dislpays session times as normal, but with
      delimeters ('===', '---', or '=-=-=') between days with total daily time at the end.
-  3) *Weekly digest*: `--weekly-digest`
+  3) *Weekly digest*: `--weekly-digest`  
      Show only the total times for each week, and then a whole average of that.
      No individual days or sessions, etc.
-  4) *Week delimited*: `--week-delimited`
+  4) *Week delimited*: `--week-delimited`  
      Like day delimeted, but instead of showing sessions between delimiters, it shows
      all of the daily digests delimeted by week. Basically daily digest delimited by week
      (Monday thru Sunday).
-* *NOTE*:
+* *NOTE*:  
   For these to work with existing args as well as the colorized output idea,
   we will have to refactor the way args are processed to automatically partition by
   flags and normal arguments, the same way that most bash commands work. so a `-mc` flag
