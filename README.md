@@ -55,13 +55,13 @@ Also, if you dont have the path `/usr/bin/python3`, update the shebang at the to
 
 ## Example Usage
 
-This image shows an example of day to day usage:
+This image shows an example of day to day usage:  
 <img src="examples/big-example.jpg" width="300px">
 
-This image shows the functionality of the UNDO command:
+This image shows the functionality of the UNDO command:  
 <img src="examples/undo-example.jpg" width="300px">
 
-This image shows the built in protection for accidental double starts/stops:
+This image shows the built in protection for accidental double starts/stops:  
 <img src="examples/start-twice.jpg" width="300px">
 
 ## TODOS
