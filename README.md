@@ -55,7 +55,6 @@ Also, if you dont have the path `/usr/bin/python3`, update the shebang at the to
 
 ## TODOS
 
-* Create longer, better, and more descriptive docstrings for all functions
 * Port from *NIX based to cross-platform compatible (Windows/DOS and *NIX)
 * Add more view options such as viewing average hours per week, etc.
   See *display functions* below.
