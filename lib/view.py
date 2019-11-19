@@ -1,17 +1,17 @@
 from datetime import datetime
-from typing import Union
+from typing import Union, Optional
 
 
 from .helpers import (get_split_lines, last_start, get_times,
                       indices_in_timeframe, datetime_range, readlines,
                       convert_timeframes)
 from .display import (display_summary, display_lines, display_timeframe,
-                      display_help)
+                      display_help, print_error)
 from .constants import TIME_FORMAT_PATTERN
 
 
 def view(timeframe_from: Union[str, None],
-         timeframe_to: Union[str, None]) -> None:
+         timeframe_to: Union[str, None], colored: bool) -> None:
     """Output data and summaries for logged time."""
     lines = get_split_lines()
 
@@ -22,7 +22,8 @@ def view(timeframe_from: Union[str, None],
 
     times = get_times(lines)
     if not times:
-        print('No data to report')
+        msg = 'No data to report'
+        print_error(msg) if colored else print(msg)
         return
 
     timeframes = convert_timeframes(timeframe_from, timeframe_to, times)

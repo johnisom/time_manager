@@ -10,7 +10,7 @@ from .start import start
 from .stop import stop
 
 
-def run(name: str, command: str, *args: List[str]) -> None:
+def run(name: str, command: str, args: List[str], flags: List[str]) -> None:
     """Run main program."""
     name = name.upper()
     command = command.upper()
@@ -27,13 +27,13 @@ def run(name: str, command: str, *args: List[str]) -> None:
     if not os.path.isfile(FILE_DEST):
         write([f'START{DELIMETER}STOP{EOL}'])
 
-    timeframe_from, timeframe_to, message = parse_args(args)
+    timeframe_from, timeframe_to, message, colored = parse_args(args, flags)
 
     if command == 'START':
-        start(message)
+        start(message, colored)
     elif command == 'STOP':
-        stop(message)
+        stop(message, colored)
     elif command == 'UNDO':
-        undo()
+        undo(colored)
     elif command == 'VIEW':
-        view(timeframe_from, timeframe_to)
+        view(timeframe_from, timeframe_to, colored)

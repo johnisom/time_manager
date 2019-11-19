@@ -21,6 +21,16 @@ PATH_TO_STDOUT = os.environ['HOME'] + '/time_manager/tmp/stdout.txt'
 PATH_TO_TMP = os.environ['HOME'] + '/time_manager/tmp'
 PATH_TO_USERS = os.environ['HOME'] + '/time_manager/users'
 
+SHORT_MESSAGE_FLAG = '-m'
+LONG_MESSAGE_FLAG = '--message'
+SHORT_NOCOLOR_FLAG = '-nc'
+LONG_NOCOLOR_FLAG = '--color=false'
+
+FLAGS = {
+    SHORT_MESSAGE_FLAG: LONG_MESSAGE_FLAG,
+    SHORT_NOCOLOR_FLAG: LONG_NOCOLOR_FLAG
+}
+
 
 class colors:
 
@@ -35,6 +45,16 @@ class colors:
         MAG = '\u001b[35m'
         CYA = '\u001b[36m'
         WHI = '\u001b[37m'
+
+        class BRIGHT:
+            BLK = '\u001b[30;1m'
+            RED = '\u001b[31;1m'
+            GRN = '\u001b[32;1m'
+            YEL = '\u001b[33;1m'
+            BLU = '\u001b[34;1m'
+            MAG = '\u001b[35;1m'
+            CYA = '\u001b[36;1m'
+            WHI = '\u001b[37;1m'
 
     class BG:
         BLK = '\u001b[40m'

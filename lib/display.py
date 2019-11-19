@@ -3,7 +3,7 @@ from datetime import datetime
 import os
 
 
-from .constants import SEC_IN_MIN, SEC_IN_HOUR, PATH_TO_HELP
+from .constants import SEC_IN_MIN, SEC_IN_HOUR, PATH_TO_HELP, colors
 
 
 def display_lines(lines: List[List[List[str]]],
@@ -52,3 +52,7 @@ def display_help() -> None:
     """Output help.txt to the console."""
     with open(PATH_TO_HELP) as f:
         print(f.read())
+
+
+def print_error(msg):
+    print(f'{colors.FG.RED}{msg}{colors.RESET}')

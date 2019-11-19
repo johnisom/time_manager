@@ -1,12 +1,14 @@
 from .helpers import readlines, write, last_stop
+from .display import print_error
 from .constants import DELIMETER
 
 
-def undo() -> None:
+def undo(colored: bool) -> None:
     """Delete last start/stop time added."""
     lines = readlines()
     if len(lines) == 1:
-        print("Cannot 'undo' anymore, reached max undo!")
+        msg = "Cannot 'undo' anymore, reached max undo!"
+        print_error(msg) if colored else print(msg)
         return
 
     data = lines[:-1]

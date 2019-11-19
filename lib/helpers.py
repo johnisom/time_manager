@@ -4,9 +4,10 @@ import os
 import subprocess
 
 
-from .constants import (FORBIDDEN, DELIM_REPLACEMENT, EOL,
-                        DELIMETER, MESSAGE_DELIM, FILE_DEST,
-                        TIME_FORMAT_PATTERN, PATH_TO_STDOUT)
+from .constants import (FORBIDDEN, FILE_DEST, EOL, DELIMETER, FLAGS,
+                        MESSAGE_DELIM, DELIM_REPLACEMENT, PATH_TO_STDOUT,
+                        TIME_FORMAT_PATTERN, LONG_NOCOLOR_FLAG,
+                        LONG_MESSAGE_FLAG)
 
 
 def sanitize(text: str) -> str:
@@ -98,22 +99,25 @@ def last_start(line: str) -> bool:
     return line[-1] == DELIMETER
 
 
-def parse_args(args: List[str]) -> Tuple[Union[str, None]]:
+def parse_args(args: List[str], flags: List[str]) -> Tuple[Union[str, None]]:
     """Parse/split a list of arguments into their components."""
     timeframe_from = None
     timeframe_to = None
     message = ''
+    colored = True
 
-    if len(args) == 1:
+    if LONG_NOCOLOR_FLAG in flags:
+        colored = False
+
+    if len(args) == 1 and LONG_MESSAGE_FLAG in flags:
+        message = args[0]
+    elif len(args) == 1 and LONG_MESSAGE_FLAG not in flags:
         timeframe_from = args[0]
     elif len(args) == 2:
-        if args[0] == '-m' or args[0] == '--message':
-            message = args[1]
-        else:
-            timeframe_from = args[0]
-            timeframe_to = args[1]
+        timeframe_from = args[0]
+        timeframe_to = args[1]
 
-    return timeframe_from, timeframe_to, message
+    return timeframe_from, timeframe_to, message, colored
 
 
 def output_everything() -> None:
@@ -125,7 +129,7 @@ def output_everything() -> None:
         if len(lines) <= os.get_terminal_size().lines:
             print(content, end='')
         else:
-            subprocess.run(['less'], input=less_content.encode('ascii'))
+            subprocess.run(['less'], input=less_content.encode('utf-8'))
 
 
 def convert_timeframes(timeframe_from: Union[str, None],
@@ -140,3 +144,17 @@ def convert_timeframes(timeframe_from: Union[str, None],
     timeframe_to = 0 if timeframe_to is None else int(timeframe_to)
 
     return timeframe_from, timeframe_to
+
+
+def separate_args_and_flags(sys_args: List[str]) -> Tuple[List[str]]:
+    args = []
+    flags = []
+    for sys_arg in sys_args:
+        if sys_arg.startswith('--'):
+            flags.append(sys_arg)
+        elif sys_arg.startswith('-'):
+            flags.append(FLAGS.get(sys_arg))
+        else:
+            args.append(sys_arg)
+
+    return args, flags

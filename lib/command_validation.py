@@ -1,5 +1,7 @@
 from typing import List
 
+from .constants import FLAGS, LONG_MESSAGE_FLAG, LONG_NOCOLOR_FLAG
+
 
 def is_help(arg: str) -> bool:
     """Check if command supplied is a help command."""
@@ -9,7 +11,7 @@ def is_help(arg: str) -> bool:
             arg == '--HELP')
 
 
-def is_view(args: List[str]) -> bool:
+def is_view(args: List[str], flags: List[str]) -> bool:
     """
     Check if valid view command.
 
@@ -33,7 +35,11 @@ def is_view(args: List[str]) -> bool:
         ['NAME', 'VIEW', _, 3] are valid arguments only if there are more than
         3 days of history becuase _ will be interpreted as the earliest day on
         record.
+
+    NOTE: only the -nc/--color=false flag can be passed in with this method.
     """
+    if len(flags) > 0 and LONG_NOCOLOR_FLAG not in flags:
+        return False
     if len(args) >= 3:
         if not is_valid_from(args[2]):
             return False
@@ -63,14 +69,16 @@ def is_valid_to(to_arg: str, from_arg: str) -> bool:
         return False
 
 
-def is_start(args: List[str]) -> bool:
+def is_start(args: List[str], flags: List[str]) -> bool:
     """Check if valid start command."""
-    return (is_message(args) or len(args) == 2) and args[1].upper() == 'START'
+    return ((is_message(args, flags) or len(args) == 2) and
+            args[1].upper() == 'START')
 
 
-def is_stop(args: List[str]) -> bool:
+def is_stop(args: List[str], flags: List[str]) -> bool:
     """Check if valid stop command."""
-    return (is_message(args) or len(args) == 2) and args[1].upper() == 'STOP'
+    return ((is_message(args, flags) or len(args) == 2) and
+            args[1].upper() == 'STOP')
 
 
 def is_undo(args: List[str]) -> bool:
@@ -78,14 +86,10 @@ def is_undo(args: List[str]) -> bool:
     return len(args) == 2 and args[1].upper() == 'UNDO'
 
 
-def is_message(args: List[str]) -> bool:
+def is_message(args: List[str], flags: List[str]) -> bool:
     """Check if message is supplied with START/STOP command."""
-    try:
-        flag = args[2].lower()
-    except IndexError:
-        return False
 
-    return len(args) == 4 and flag == '-m' or flag == '--message'
+    return len(args) == 3 and LONG_MESSAGE_FLAG in flags
 
 
 def is_all_alpha(name: str) -> bool:
@@ -93,7 +97,13 @@ def is_all_alpha(name: str) -> bool:
     return all([char.isalpha() for char in name])
 
 
-def is_valid(args: List[str]) -> bool:
+def is_good_flags(flags: List[str]) -> bool:
+    acceptable = set(FLAGS.values())
+    return acceptable.issuperset(flags)
+
+
+def is_valid(args: List[str], flags: List[str]) -> bool:
     """Check if format of arguments is correct as specified in help.txt."""
-    return (is_start(args) or is_stop(args) or
-            is_view(args) or is_undo(args)) and is_all_alpha(args[0])
+    is_good_commands = (is_start(args, flags) or is_stop(args, flags) or
+                        is_view(args, flags) or is_undo(args))
+    return is_good_commands and is_all_alpha(args[0]) and is_good_flags(flags)

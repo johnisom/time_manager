@@ -8,8 +8,10 @@ and <command> is one of START, STOP, UNDO, or VIEW,
 the 4 available commands.
 
 Flags:
-  -m, --message    Allows you to pass in an optional message.
-                   See below.
+  -m, --message        Allows you to pass in an optional message.
+                       See below.
+
+  -nc, --color=false   Turns off default coloring of output.
 
 Arguments are case sensitive, except for NAME and <command>
 

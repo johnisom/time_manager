@@ -17,11 +17,11 @@ import os
 from lib.run import run
 from lib.display import display_help
 from lib.command_validation import is_valid, is_help
-from lib.helpers import output_everything
+from lib.helpers import output_everything, separate_args_and_flags
 from lib.constants import PATH_TO_USERS, PATH_TO_STDOUT, PATH_TO_TMP
 
 if __name__ == "__main__":
-    args = sys.argv[1:]
+    args, flags = separate_args_and_flags(sys.argv[1:])
 
     os.chdir(PATH_TO_USERS)
 
@@ -31,7 +31,10 @@ if __name__ == "__main__":
     sys.stdout = open(PATH_TO_STDOUT, 'w')
 
     # checks whether to display help or to run the script
-    display_help() if not is_valid(args) or is_help(args[0]) else run(*args)
+    if not is_valid(args, flags) or is_help(args[0]):
+        display_help()
+    else:
+        run(args[0], args[1], args[2:], flags)
 
     sys.stdout.close()
     sys.stdout = sys.__stdout__
