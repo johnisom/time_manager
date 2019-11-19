@@ -53,6 +53,17 @@ This relies on python 3.6 or greater (uses f-strings), so make sure you have tha
 Also, if you dont have the path `/usr/bin/python3`, update the shebang at the top of
 `~/time_manager/time_manager.py` from `#!/usr/bin/python3` to `#!/your/path/to/python/3.6/or/greater`.
 
+## Example Usage
+
+This image shows an example of day to day usage:
+<img src="examples/big-example.jpg" width="300px">
+
+This image shows the functionality of the UNDO command:
+<img src="examples/undo-example.jpg" width="300px">
+
+This image shows the built in protection for accidental double starts/stops:
+<img src="examples/start-twice.jpg" width="300px">
+
 ## TODOS
 
 * Port from *NIX based to cross-platform compatible (Windows/DOS and *NIX)
