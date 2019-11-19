@@ -8,24 +8,39 @@ and <command> is one of START, STOP, UNDO, or VIEW,
 the 4 available commands.
 
 Flags:
-  -m, --message        Allows you to pass in an optional message.
-                       See below.
+  -m, --message           Allows you to pass in an optional message.
+                          See below.
 
-  -nc, --color=false   Turns off default coloring of output.
+  -nc, --nocolor          Turns off default coloring of output.
+
+Display Option Flags:
+  -d, --daily-digest      Show only total hours per day without individual sessions.
+                          Can't be used with any other display option.
+
+  -dd, --day-delimited    Show all session times but have each day visually separated/delimited.
+                          Also shows total hours per day.
+                          Can't be used with any other display option.
+
+  -w, --weekly-digest     Show only total hours per week without individual sessions or days.
+                          Can't be used with any other display option.
+
+  -wd, --week-delimited   Daily digest but have each week visually separated/delimited.
+                          Also shows total hours per week.
+                          Can't be used with any other display option.
 
 Arguments are case sensitive, except for NAME and <command>
 
 START:
   You use this command once you have started studying.
 
-  MESSAGE (with -m flag):
+  MESSAGE (with -m/--message flag):
     Add a message/note. Example messages would be "refactor python
     function docstrings" or "solve 5kyu codewars problems."
 
 STOP:
   You use this command once you have stopped studying.
 
-  MESSAGE (with -m flag):
+  MESSAGE (with -m/--message flag):
     Add a message/note. Example messages would be "finished all but
     3 TODOS" or "finally done with Dijkstra's algorithm."
 

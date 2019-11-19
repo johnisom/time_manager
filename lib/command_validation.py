@@ -1,6 +1,7 @@
 from typing import List
 
-from .constants import FLAGS, LONG_MESSAGE_FLAG, LONG_NOCOLOR_FLAG
+from .constants import (FLAGS, LONG_MESSAGE_FLAG, LONG_NOCOLOR_FLAG,
+                        VIEW_OPTION_FLAGS)
 
 
 def is_help(arg: str) -> bool:
@@ -38,7 +39,9 @@ def is_view(args: List[str], flags: List[str]) -> bool:
 
     NOTE: only the -nc/--color=false flag can be passed in with this method.
     """
-    if len(flags) > 0 and LONG_NOCOLOR_FLAG not in flags:
+    if len(flags) > 2:
+        return False
+    if len(flags) == 2 and LONG_NOCOLOR_FLAG not in flags:
         return False
     if len(args) >= 3:
         if not is_valid_from(args[2]):
