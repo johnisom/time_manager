@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import Optional
 
 from .helpers import last_start, sanitize, readlines
 from .display import print_error

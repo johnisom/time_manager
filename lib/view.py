@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Union, Optional
+from typing import Union
 
 
 from .helpers import (get_split_lines, last_start, get_times,
