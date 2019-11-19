@@ -7,7 +7,7 @@ from .constants import SEC_IN_MIN, SEC_IN_HOUR, PATH_TO_HELP, colors
 
 
 def display_lines(lines: List[List[List[str]]],
-                  times: List[List[datetime]]) -> None:
+                  times: List[List[datetime]], colored: bool) -> None:
     """
     Display start times, stop times, messages, and session times.
 
@@ -24,28 +24,51 @@ def display_lines(lines: List[List[List[str]]],
         if stop_message:
             stop_message = f' -> "{stop_message}"'
 
-        print(f'Start: {start[0]}{start_message}')
-        print(f'Stop: {stop[0]}{stop_message}')
+        if colored:
+            print(f'{colors.FG.MAG}Start: {colors.FG.BRIGHT.GRN}{start[0]}'
+                  f'{colors.FG.BRIGHT.CYA}{colors.BG.WHI}{start_message}'
+                  f'{colors.RESET}')
+
+            print(f'{colors.FG.MAG}Stop: {colors.FG.BRIGHT.GRN}{stop[0]}'
+                  f'{colors.FG.BRIGHT.CYA}{colors.BG.WHI}{stop_message}'
+                  f'{colors.RESET}')
+        else:
+            print(f'Start: {start[0]}{start_message}')
+            print(f'Stop: {stop[0]}{stop_message}')
         delta = times[idx][1] - times[idx][0]
-        display_summary('Session time', delta.seconds, '\n')
+        display_summary('Session time', delta.seconds, colored, '\n')
 
 
-def display_summary(title: str, total_seconds: int,
+def display_summary(title: str, total_seconds: int, colored: bool,
                     trailer: Optional[str] = '') -> None:
     """Display line of time."""
     secs = total_seconds % SEC_IN_MIN
     mins = total_seconds // SEC_IN_MIN % SEC_IN_MIN
     hours = total_seconds // SEC_IN_HOUR
-    print(f'{title}: {hours:02}:{mins:02}:{secs:02}{trailer}')
+    if colored:
+        print(f'{colors.FG.GRN}{title}: {colors.FG.YEL}{hours:02}:{mins:02}:'
+              f'{secs:02}{colors.RESET}{trailer}')
+    else:
+        print(f'{title}: {hours:02}:{mins:02}:{secs:02}{trailer}')
 
 
-def display_timeframe(timeframe_from: int, timeframe_to: int) -> None:
+def display_timeframe(timeframe_from: int, timeframe_to: int,
+                      colored: bool) -> None:
     """Display info about range of timeframe."""
     if timeframe_to == 0:
-        print(f'\nShowing results for the past {timeframe_from} day(s)\n')
+        if colored:
+            print('\nShowing results for the past '
+                  f'{colors.FG.BLU}{timeframe_from}{colors.RESET} day(s)')
+        else:
+            print(f'\nShowing results for the past {timeframe_from} day(s)\n')
     else:
-        print(f'\nShowing results from {timeframe_from}', end=' ')
-        print(f'days ago to {timeframe_to} day(s) ago\n')
+        if colored:
+            print(f'\nShowing results from {colors.FG.BLU}{timeframe_from}'
+                  f'{colors.RESET} days ago to {colors.FG.BLU}'
+                  f'{timeframe_to}{colors.RESET} day(s) ago\n')
+        else:
+            print(f'\nShowing results from {timeframe_from} '
+                  f'days ago to {timeframe_to} day(s) ago\n')
 
 
 def display_help() -> None:

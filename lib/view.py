@@ -42,7 +42,9 @@ def view(timeframe_from: Union[str, None],
     total_total_seconds = sum(diff_seconds)
     avg_total_seconds = total_total_seconds // (timeframe_from - timeframe_to)
 
-    display_timeframe(timeframe_from, timeframe_to)
-    display_lines(lines, times)
-    display_summary('Average', avg_total_seconds, ' per day')
-    display_summary('Total', total_total_seconds)
+    display_timeframe(timeframe_from, timeframe_to, colored)
+    display_lines(lines, times, colored)
+    display_summary('Average', avg_total_seconds,
+                    colored, ' per day')
+    display_summary('Total', total_total_seconds,
+                    colored)
