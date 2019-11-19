@@ -79,13 +79,13 @@ This image shows the built in protection for accidental double starts/stops:
      Show only the total times for each day, and then a whole average of that.
      No individual sessions, session times, or messages.
   2) *Day delimited*: `--day-delimited`  
-     Normal mixed with daily digest. Dislpays session times as normal, but with
+     Normal mixed with daily digest. Displays session times as normal, but with
      delimeters ('===', '---', or '=-=-=') between days with total daily time at the end.
   3) *Weekly digest*: `--weekly-digest`  
      Show only the total times for each week, and then a whole average of that.
      No individual days or sessions, etc.
   4) *Week delimited*: `--week-delimited`  
-     Like day delimeted, but instead of showing sessions between delimiters, it shows
+     Like day delimited, but instead of showing sessions between delimiters, it shows
      all of the daily digests delimeted by week. Basically daily digest delimited by week
      (Monday thru Sunday).
 * *NOTE*:  
