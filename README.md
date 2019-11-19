@@ -12,7 +12,7 @@ the view command, it converts those to nice-to-read date-time formats
 and gives you an average of how many hours you studied for the past
 N days. A thorough description is better available in help.txt.
 I am glad to say that I have done some major work and refactoring on this,
-so it is much better to work with.
+so it is much better to work with.  
 __Check out help.txt for help.__
 
 ## Installation
