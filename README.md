@@ -87,10 +87,9 @@ Same selection but with day-delimited view option used:
   2) DONE ~~*Day delimited*: `--day-delimited`  
      Normal mixed with daily digest. Displays session times as normal, but with
      delimeters ('===', '---', or '=-=-=') between days with total daily time at the end.~~
-  3) *Weekly digest*: `--weekly-digest`  
+  3) DONE ~~*Weekly digest*: `--weekly-digest`  
      Show only the total times for each week, and then a whole average of that.
-     No individual days or sessions, etc.
-  4) *Week delimited*: `--week-delimited`  
+     No individual days or sessions, etc.~~
+  4) DONE ~~*Week delimited*: `--week-delimited`  
      Like day delimited, but instead of showing sessions between delimiters, it shows
-     all of the daily digests delimeted by week. Basically daily digest delimited by week
-     (Monday thru Sunday).
+     all of the daily digests delimeted by week. Basically daily digest delimited by week.~~
