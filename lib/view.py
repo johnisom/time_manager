@@ -49,6 +49,7 @@ def view(timeframe_from: Union[str, None], timeframe_to: Union[str, None],
         daily_digest(*args)
     elif view_option == 'day-delimited':
         day_delimited(*args)
+    print(view_option)
 
 
 def default(timeframe_from: int, timeframe_to: int,
@@ -138,9 +139,9 @@ def day_delimited(timeframe_from: int, timeframe_to: int,
             print(f'\n{colors.FG.BRIGHT.MAG}{"=" * (cols - 6)}'
                   f'{colors.RESET}\n\n')
         else:
-            print('-' * (cols - 6))
+            print(f'{"=" * (cols - 6)}\n')
             display_summary('Daily amount', total, False)
-            print(f'{"=" * (cols - 6)}\n{"=" * (cols - 6)}')
+            print(f'\n{"=" * (cols - 6)}\n\n')
 
     display_summary('Average', avg_total_seconds, colored, ' per day')
     display_summary('Total', total_total_seconds, colored)

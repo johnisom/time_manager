@@ -120,7 +120,7 @@ def parse_args(args: List[str], flags: List[str]) -> Tuple[Union[str, None]]:
 
     if flags and LONG_NOCOLOR_FLAG not in flags:
         view_option = flags[0].strip('-')
-    elif flags:
+    elif len(flags) > 1 and LONG_NOCOLOR_FLAG in flags:
         view_option = flags[flags.index(LONG_NOCOLOR_FLAG) - 1].strip('-')
 
     return timeframe_from, timeframe_to, message, view_option, colored
