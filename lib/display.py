@@ -16,18 +16,18 @@ def display_lines(lines: List[List[List[str]]],
         Stop: timestamp( -> "message")
         Session time: hour:min:sec
     """
-    for idx, (start, stop) in enumerate(lines):
-        start_message = start[1]
-        stop_message = stop[1]
+    for (start_time, stop_time),\
+            ((start_str, start_message),
+             (stop_str, stop_message)) in zip(times, lines):
         if start_message:
             start_message = f'-> "{start_message}"'
         if stop_message:
             stop_message = f'-> "{stop_message}"'
 
-        display_line('Start', start[0], start_message, colored)
-        display_line('Stop', stop[0], stop_message, colored)
+        display_line('Start', start_str, start_message, colored)
+        display_line('Stop', stop_str, stop_message, colored)
 
-        delta = times[idx][1] - times[idx][0]
+        delta = stop_time - start_time
         display_summary('Session time', delta.seconds, colored, '\n')
 
 
