@@ -78,9 +78,9 @@ This image shows the built in protection for accidental double starts/stops:
   1) DONE ~~*Daily digest*: `--daily-digest`  
      Show only the total times for each day, and then a whole average of that.
      No individual sessions, session times, or messages.~~
-  2) *Day delimited*: `--day-delimited`  
+  2) DONE ~~*Day delimited*: `--day-delimited`  
      Normal mixed with daily digest. Displays session times as normal, but with
-     delimeters ('===', '---', or '=-=-=') between days with total daily time at the end.
+     delimeters ('===', '---', or '=-=-=') between days with total daily time at the end.~~
   3) *Weekly digest*: `--weekly-digest`  
      Show only the total times for each week, and then a whole average of that.
      No individual days or sessions, etc.
