@@ -1,7 +1,8 @@
-users/*/data.*
+users/
 *nub*
 *~
 *#
 \#*#
-**/__pycache__
-.vscode
+__pycache__/
+.vscode/
+tmp/
