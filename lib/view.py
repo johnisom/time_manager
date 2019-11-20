@@ -210,6 +210,12 @@ def week_delimited(timeframe_from: int, timeframe_to: int,
     total_seconds = sum(daily_times)
     average_seconds = total_seconds // num_weeks
 
+    if colored:
+        print(f'Chosen display: {colors.FG.BRIGHT.RED}'
+              f'WEEK DELIMITED{colors.RESET}\n')
+    else:
+        print('Chosen display: WEEK DELIMITED\n')
+
     for dates, daily_times in zip(week_dates, week_daily_times):
         for date, daily_time in zip(dates, daily_times):
             date = date.strftime(DATE_FORMAT_PATTERN)
