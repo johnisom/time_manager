@@ -87,8 +87,8 @@ def daily_digest(timeframe_from: int, timeframe_to: int,
     average_seconds = total_seconds // (timeframe_from - timeframe_to)
 
     if colored:
-        print(
-            f'Chosen display: {colors.FG.BRIGHT.RED}DAILY DIGEST{colors.RESET}\n')
+        print(f'Chosen display: {colors.FG.BRIGHT.RED}DAILY DIGEST'
+              f'{colors.RESET}\n')
     else:
         print('Chosen display: DAILY DIGEST\n')
 
