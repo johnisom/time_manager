@@ -79,6 +79,6 @@ def display_help() -> None:
         print(f.read())
 
 
-def print_error(msg):
+def print_error(msg: str) -> None:
     """Print message as an error."""
     print(f'{colors.FG.RED}{msg}{colors.RESET}')

@@ -190,37 +190,37 @@ def week_delimited(timeframe_from: int, timeframe_to: int,
                    lines: List[List[List[str]]], times: List[List[datetime]],
                    colored: bool) -> None:
     """Carry on duties of week-delimited view option as stated in help.txt."""
-    num_weeks = ceil((timeframe_from - timeframe_to) / 7)
-    week_times = [[] for _ in range(num_weeks)]
-    week_lines = [[] for _ in range(num_weeks)]
+    daily_times = [0 for _ in range(timeframe_from - timeframe_to)]
+    dates = [times[0][1]]
     beg_date = times[0][0].date()
-    week = 0
-    for time, line in zip(times, lines):
-        if ((time[1].date() - beg_date).days // 7) != week:
-            week += 1
-        week_times[week].append(time)
-        week_lines[week].append(line)
+    day = 0
+    for start, stop in times:
+        if (stop.date() - beg_date).days != day:
+            dates.append(stop)
+            day += 1
+        daily_times[day] += (stop - start).seconds
 
-    weekly_totals = [sum([(stop - start).seconds for start, stop in times])
-                    for times in week_times]
+    num_weeks = ceil((timeframe_from - timeframe_to) / 7)
+    week_daily_times = [[] for _ in range(num_weeks)]
+    week_dates = [[] for _ in range(num_weeks)]
+    for idx, (date, daily_time) in enumerate(zip(dates, daily_times)):
+        week_daily_times[idx // 7].append(daily_time)
+        week_dates[idx // 7].append(date)
 
-    diff_seconds = [(stop - start).seconds for start, stop in times]
-    total_total_seconds = sum(diff_seconds)
-    avg_total_seconds = total_total_seconds // num_weeks
+    total_seconds = sum(daily_times)
+    average_seconds = total_seconds // num_weeks
 
-    if colored:
-        print(f'Chosen display: {colors.FG.BRIGHT.RED}'
-              f'WEEK DELIMITED{colors.RESET}\n')
-    else:
-        print('Chosen display: WEEK DELIMITED\n')
+    for dates, daily_times in zip(week_dates, week_daily_times):
+        for date, daily_time in zip(dates, daily_times):
+            date = date.strftime(DATE_FORMAT_PATTERN)
+            display_summary(date, daily_time, colored)
+            print()
 
-    for total, times, lines in zip(weekly_totals, week_times, week_lines):
-        display_lines(lines, times, colored)
-
+        total = sum(daily_times)
         cols = os.get_terminal_size().columns
         if colored:
             print(f'{colors.FG.BRIGHT.MAG}{"=" * (cols - 6)}{colors.RESET}\n')
-            display_summary('Weeky amount', total, True)
+            display_summary('Weekly amount', total, True)
             print(f'\n{colors.FG.BRIGHT.MAG}{"=" * (cols - 6)}'
                   f'{colors.RESET}\n\n')
         else:
@@ -228,5 +228,5 @@ def week_delimited(timeframe_from: int, timeframe_to: int,
             display_summary('Weekly amount', total, False)
             print(f'\n{"=" * (cols - 6)}\n\n')
 
-    display_summary('Average', avg_total_seconds, colored, ' per week')
-    display_summary('Total', total_total_seconds, colored)
+    display_summary('\nAverage', average_seconds, colored, ' per week')
+    display_summary('Total', total_seconds, colored)
