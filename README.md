@@ -88,11 +88,3 @@ This image shows the built in protection for accidental double starts/stops:
      Like day delimited, but instead of showing sessions between delimiters, it shows
      all of the daily digests delimeted by week. Basically daily digest delimited by week
      (Monday thru Sunday).
-* *NOTE*:  
-  For these to work with existing args as well as the colorized output idea,
-  we will have to refactor the way args are processed to automatically partition by
-  flags and normal arguments, the same way that most bash commands work. so a `-mc` flag
-  would expand to a `-m` flag and a `-c` flag. Double flags (`--no-color`) are put in a list,
-  and then the single flags are expanded into double flags (all single flags will have a
-  double flag equivalent) and added to the double flag list.
-* TODO: above
