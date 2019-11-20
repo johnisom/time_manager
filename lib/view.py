@@ -1,5 +1,6 @@
 from datetime import datetime
 from typing import Union, List
+import os
 
 
 from .helpers import (get_split_lines, last_start, get_times,
@@ -41,10 +42,13 @@ def view(timeframe_from: Union[str, None], timeframe_to: Union[str, None],
 
     display_timeframe(timeframe_from, timeframe_to, colored)
 
+    args = timeframe_from, timeframe_to, lines, times, colored
     if view_option == 'default':
-        default(timeframe_from, timeframe_to, lines, times, colored)
+        default(*args)
     elif view_option == 'daily-digest':
-        daily_digest(timeframe_from, timeframe_to, lines, times, colored)
+        daily_digest(*args)
+    elif view_option == 'day-delimited':
+        day_delimited(*args)
 
 
 def default(timeframe_from: int, timeframe_to: int,
@@ -86,10 +90,54 @@ def daily_digest(timeframe_from: int, timeframe_to: int,
     else:
         print('Chosen display: DAILY DIGEST\n')
 
-    for idx, daily_time in enumerate(daily_times):
-        date = dates[idx].strftime(DATE_FORMAT_PATTERN)
+    for date, daily_time in zip(dates, daily_times):
+        date = date.strftime(DATE_FORMAT_PATTERN)
         display_summary(date, daily_time, colored)
         print()
 
-    display_summary('\n\nAverage', average_seconds, colored, ' per day')
+    display_summary('\nAverage', average_seconds, colored, ' per day')
     display_summary('Total', total_seconds, colored)
+
+
+def day_delimited(timeframe_from: int, timeframe_to: int,
+                  lines: List[List[List[str]]], times: List[List[datetime]],
+                  colored: bool) -> None:
+    diff_seconds = [(stop - start).seconds for start, stop in times]
+    total_total_seconds = sum(diff_seconds)
+    avg_total_seconds = total_total_seconds // (timeframe_from - timeframe_to)
+
+    day_times = [[] for _ in range(timeframe_from - timeframe_to)]
+    day_lines = [[] for _ in range(len(day_times))]
+    beg_date = times[0][0].date()
+    day = 0
+    for time, line in zip(times, lines):
+        if (time[1].date() - beg_date).days != day:
+            day += 1
+        day_times[day].append(time)
+        day_lines[day].append(line)
+
+    daily_totals = [sum([(stop - start).seconds for start, stop in times])
+                    for times in day_times]
+
+    if colored:
+        print(f'Chosen display: {colors.FG.BRIGHT.RED}'
+              f'DAY DELIMITED{colors.RESET}\n')
+    else:
+        print('Chosen display: DAY DELIMITED\n')
+
+    for total, times, lines in zip(daily_totals, day_times, day_lines):
+        display_lines(lines, times, colored)
+
+        cols = os.get_terminal_size().columns
+        if colored:
+            print(f'{colors.FG.BRIGHT.MAG}{"=" * (cols - 6)}{colors.RESET}\n')
+            display_summary('Daily amount', total, True)
+            print(f'\n{colors.FG.BRIGHT.MAG}{"=" * (cols - 6)}'
+                  f'{colors.RESET}\n\n')
+        else:
+            print('-' * (cols - 6))
+            display_summary('Daily amount', total, False)
+            print(f'{"=" * (cols - 6)}\n{"=" * (cols - 6)}')
+
+    display_summary('Average', avg_total_seconds, colored, ' per day')
+    display_summary('Total', total_total_seconds, colored)
