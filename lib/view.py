@@ -54,6 +54,7 @@ def view(timeframe_from: Union[str, None], timeframe_to: Union[str, None],
 def default(timeframe_from: int, timeframe_to: int,
             lines: List[List[List[str]]], times: List[List[datetime]],
             colored: bool) -> None:
+    """Carry on duties of default view option."""
     diff_seconds = [(stop - start).seconds for start, stop in times]
     total_total_seconds = sum(diff_seconds)
     avg_total_seconds = total_total_seconds // (timeframe_from - timeframe_to)
@@ -71,6 +72,7 @@ def default(timeframe_from: int, timeframe_to: int,
 def daily_digest(timeframe_from: int, timeframe_to: int,
                  lines: List[List[List[str]]], times: List[List[datetime]],
                  colored: bool) -> None:
+    """Carry on duties of daily-digest view option as stated in help.txt."""
     daily_times = [0 for _ in range(timeframe_from - timeframe_to)]
     dates = [times[0][1]]
     beg_date = times[0][0].date()
@@ -102,6 +104,7 @@ def daily_digest(timeframe_from: int, timeframe_to: int,
 def day_delimited(timeframe_from: int, timeframe_to: int,
                   lines: List[List[List[str]]], times: List[List[datetime]],
                   colored: bool) -> None:
+    """Carry on duties of day-delimited view option as stated in help.txt."""
     diff_seconds = [(stop - start).seconds for start, stop in times]
     total_total_seconds = sum(diff_seconds)
     avg_total_seconds = total_total_seconds // (timeframe_from - timeframe_to)

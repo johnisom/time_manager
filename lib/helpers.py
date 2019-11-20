@@ -153,6 +153,7 @@ def convert_timeframes(timeframe_from: Union[str, None],
 
 
 def separate_args_and_flags(sys_args: List[str]) -> Tuple[List[str]]:
+    """Separate regular arguments and flag arguments into separate lists."""
     args = []
     flags = []
     for sys_arg in sys_args:

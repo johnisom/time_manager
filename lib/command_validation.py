@@ -101,6 +101,7 @@ def is_all_alpha(name: str) -> bool:
 
 
 def is_good_flags(flags: List[str]) -> bool:
+    """Check if all flags are known to program."""
     acceptable = set(FLAGS.values())
     return acceptable.issuperset(flags)
 

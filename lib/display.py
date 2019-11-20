@@ -32,6 +32,7 @@ def display_lines(lines: List[List[List[str]]],
 
 
 def display_line(title: str, time: str, message: str, colored: bool) -> None:
+    """Help display_lines by displaying just one line."""
     if colored:
         print(f'{colors.FG.MAG}{title}: {colors.FG.BRIGHT.GRN}{time} '
               f'{colors.FG.BRIGHT.CYA}{message}'
@@ -79,4 +80,5 @@ def display_help() -> None:
 
 
 def print_error(msg):
+    """Print message as an error."""
     print(f'{colors.FG.RED}{msg}{colors.RESET}')
