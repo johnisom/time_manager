@@ -214,19 +214,18 @@ def week_delimited(timeframe_from: int, timeframe_to: int,
         for date, daily_time in zip(dates, daily_times):
             date = date.strftime(DATE_FORMAT_PATTERN)
             display_summary(date, daily_time, colored)
-            print()
 
         total = sum(daily_times)
         cols = os.get_terminal_size().columns
         if colored:
-            print(f'{colors.FG.BRIGHT.MAG}{"=" * (cols - 6)}{colors.RESET}\n')
+            print(f'\n{colors.FG.BRIGHT.MAG}{"=" * (cols - 6)}{colors.RESET}\n')
             display_summary('Weekly amount', total, True)
             print(f'\n{colors.FG.BRIGHT.MAG}{"=" * (cols - 6)}'
                   f'{colors.RESET}\n\n')
         else:
-            print(f'{"=" * (cols - 6)}\n')
+            print(f'\n{"=" * (cols - 6)}\n')
             display_summary('Weekly amount', total, False)
             print(f'\n{"=" * (cols - 6)}\n\n')
 
-    display_summary('\nAverage', average_seconds, colored, ' per week')
+    display_summary('Average', average_seconds, colored, ' per week')
     display_summary('Total', total_seconds, colored)
