@@ -70,6 +70,12 @@ Same selection but with daily-digest view option used:
 
 Same selection but with day-delimited view option used:  
 <img src="examples/day-delimited.jpg" width="300px">
+
+Demonstration of weekly-digest view option for all time:  
+<img src="examples/weekly-digest.jpg" width="300px">
+
+Same selection but with week-delimited view option:  
+<img src="examples/week-delimited.jpg" width="300px">
 <!-- markdownlint-enable MD033 -->
 
 ## TODOS
