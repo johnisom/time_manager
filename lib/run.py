@@ -27,7 +27,8 @@ def run(name: str, command: str, args: List[str], flags: List[str]) -> None:
     if not os.path.isfile(FILE_DEST):
         write([f'START{DELIMETER}STOP{EOL}'])
 
-    timeframe_from, timeframe_to, message, colored = parse_args(args, flags)
+    timeframe_from, timeframe_to, message, view_option, colored = parse_args(
+        args, flags)
 
     if command == 'START':
         start(message, colored)
@@ -36,4 +37,4 @@ def run(name: str, command: str, args: List[str], flags: List[str]) -> None:
     elif command == 'UNDO':
         undo(colored)
     elif command == 'VIEW':
-        view(timeframe_from, timeframe_to, colored)
+        view(timeframe_from, timeframe_to, view_option, colored)

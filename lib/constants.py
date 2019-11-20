@@ -6,6 +6,7 @@ SEC_IN_HOUR = 3_600
 SEC_IN_MIN = 60
 
 TIME_FORMAT_PATTERN = '%a %Y-%m-%d %H:%M:%S'
+DATE_FORMAT_PATTERN = '%a %Y-%m-%d'
 
 FILE_DEST = 'data.psv'
 

@@ -20,23 +20,24 @@ def display_lines(lines: List[List[List[str]]],
         start_message = start[1]
         stop_message = stop[1]
         if start_message:
-            start_message = f' -> "{start_message}"'
+            start_message = f'-> "{start_message}"'
         if stop_message:
-            stop_message = f' -> "{stop_message}"'
+            stop_message = f'-> "{stop_message}"'
 
-        if colored:
-            print(f'{colors.FG.MAG}Start: {colors.FG.BRIGHT.GRN}{start[0]}'
-                  f'{colors.FG.BRIGHT.CYA}{colors.BG.WHI}{start_message}'
-                  f'{colors.RESET}')
+        display_line('Start', start[0], start_message, colored)
+        display_line('Stop', stop[0], stop_message, colored)
 
-            print(f'{colors.FG.MAG}Stop: {colors.FG.BRIGHT.GRN}{stop[0]}'
-                  f'{colors.FG.BRIGHT.CYA}{colors.BG.WHI}{stop_message}'
-                  f'{colors.RESET}')
-        else:
-            print(f'Start: {start[0]}{start_message}')
-            print(f'Stop: {stop[0]}{stop_message}')
         delta = times[idx][1] - times[idx][0]
         display_summary('Session time', delta.seconds, colored, '\n')
+
+
+def display_line(title: str, time: str, message: str, colored: bool) -> None:
+    if colored:
+        print(f'{colors.FG.MAG}{title}: {colors.FG.BRIGHT.GRN}{time} '
+              f'{colors.FG.BRIGHT.CYA}{colors.BG.WHI}{message}'
+              f'{colors.RESET}')
+    else:
+        print(f'Start: {start[0]}{start_message}')
 
 
 def display_summary(title: str, total_seconds: int, colored: bool,
@@ -58,7 +59,7 @@ def display_timeframe(timeframe_from: int, timeframe_to: int,
     if timeframe_to == 0:
         if colored:
             print('\nShowing results for the past '
-                  f'{colors.FG.BLU}{timeframe_from}{colors.RESET} day(s)')
+                  f'{colors.FG.BLU}{timeframe_from}{colors.RESET} day(s)\n')
         else:
             print(f'\nShowing results for the past {timeframe_from} day(s)\n')
     else:
