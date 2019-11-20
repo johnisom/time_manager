@@ -56,14 +56,20 @@ Also, if you dont have the path `/usr/bin/python3`, update the shebang at the to
 ## Example Usage
 
 <!-- markdownlint-disable MD033 -->
-This image shows an example of day to day usage:  
-<img src="examples/big-example.jpg" width="300px">
+Demonstration of START, STOP, and UNDO commands:  
+<img src="examples/start-stop-undo.jpg" width="300px">
 
-This image shows the functionality of the UNDO command:  
-<img src="examples/undo-example.jpg" width="300px">
+The result of running the commmands above:  
+<img src="examples/start-stop-undo-view.jpg" width="300px">
 
-This image shows the built in protection for accidental double starts/stops:  
-<img src="examples/start-twice.jpg" width="300px">
+Demonstration of choosing to only view within the specified timeframe:  
+<img src="examples/timeframe.jpg" width="300px">
+
+Same selection but with daily-digest view option used:  
+<img src="examples/daily-digest.jpg" width="300px">
+
+Same selection but with day-delimited view option used:  
+<img src="examples/day-delimited.jpg" width="300px">
 <!-- markdownlint-enable MD033 -->
 
 ## TODOS
