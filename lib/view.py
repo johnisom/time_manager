@@ -1,5 +1,6 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Union, List
+from math import ceil
 import os
 
 
@@ -49,7 +50,8 @@ def view(timeframe_from: Union[str, None], timeframe_to: Union[str, None],
         daily_digest(*args)
     elif view_option == 'day-delimited':
         day_delimited(*args)
-    print(view_option)
+    elif view_option == 'weekly-digest':
+        weekly_digest(*args)
 
 
 def default(timeframe_from: int, timeframe_to: int,
@@ -145,3 +147,38 @@ def day_delimited(timeframe_from: int, timeframe_to: int,
 
     display_summary('Average', avg_total_seconds, colored, ' per day')
     display_summary('Total', total_total_seconds, colored)
+
+
+def weekly_digest(timeframe_from: int, timeframe_to: int,
+                  lines: List[List[List[str]]], times: List[List[datetime]],
+                  colored: bool) -> None:
+    """Carry on duties of weekly-digest view option as stated in help.txt."""
+    num_weeks = ceil((timeframe_from - timeframe_to) / 7)
+    weekly_times = [0 for _ in range(num_weeks)]
+    dates = [times[0][1]]
+    beg_date = times[0][0].date()
+    week = 0
+    for start, stop in times:
+        if ((stop.date() - beg_date).days // 7) != week:
+            dates.append(stop)
+            week += 1
+        weekly_times[week] += (stop - start).seconds
+
+    total_seconds = sum(weekly_times)
+    average_seconds = total_seconds // num_weeks
+
+    if colored:
+        print(f'Chosen display: {colors.FG.BRIGHT.RED}WEEKLY DIGEST'
+              f'{colors.RESET}\n')
+    else:
+        print('Chosen display: WEEKLY DIGEST\n')
+
+    for date, weekly_time in zip(dates, weekly_times):
+        end = date + timedelta(days=6)
+        start_date = date.strftime(DATE_FORMAT_PATTERN)
+        end_date = end.strftime(DATE_FORMAT_PATTERN)
+        display_summary(f'{start_date} - {end_date}', weekly_time, colored)
+        print()
+
+    display_summary('\nAverage', average_seconds, colored, ' per week')
+    display_summary('Total', total_seconds, colored)
