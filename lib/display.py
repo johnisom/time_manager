@@ -34,7 +34,7 @@ def display_lines(lines: List[List[List[str]]],
 def display_line(title: str, time: str, message: str, colored: bool) -> None:
     if colored:
         print(f'{colors.FG.MAG}{title}: {colors.FG.BRIGHT.GRN}{time} '
-              f'{colors.FG.BRIGHT.CYA}{colors.BG.WHI}{message}'
+              f'{colors.FG.BRIGHT.CYA}{message}'
               f'{colors.RESET}')
     else:
         print(f'Start: {start[0]}{start_message}')
