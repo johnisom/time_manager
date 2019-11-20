@@ -75,7 +75,7 @@ This image shows the built in protection for accidental double starts/stops:
   reading, etc. Will require overhaul of all data structures and processes.
   Very low priority.
 * Display functions
-  1) ~~*Daily digest*: `--daily-digest`  
+  1) DONE ~~*Daily digest*: `--daily-digest`  
      Show only the total times for each day, and then a whole average of that.
      No individual sessions, session times, or messages.~~
   2) *Day delimited*: `--day-delimited`  
