@@ -224,7 +224,8 @@ def week_delimited(timeframe_from: int, timeframe_to: int,
         total = sum(daily_times)
         cols = os.get_terminal_size().columns
         if colored:
-            print(f'\n{colors.FG.BRIGHT.MAG}{"=" * (cols - 6)}{colors.RESET}\n')
+            print(f'\n{colors.FG.BRIGHT.MAG}{"=" * (cols - 6)}'
+                  f'{colors.RESET}\n')
             display_summary('Weekly amount', total, True)
             print(f'\n{colors.FG.BRIGHT.MAG}{"=" * (cols - 6)}'
                   f'{colors.RESET}\n\n')
