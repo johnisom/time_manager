@@ -80,22 +80,9 @@ Same selection but with week-delimited view option:
 
 ## TODOS
 
+* Refactor viewing functions. There is a lot of reused code and it's messy,
+  so lets DRY things up.
 * Port from *NIX based to cross-platform compatible (Windows/DOS and *NIX)
-* Add more view options such as viewing average hours per week, etc.
-  See *display functions* below.
 * Add categories of what your time is going to, like coding, working out,
   reading, etc. Will require overhaul of all data structures and processes.
   Very low priority.
-* Display functions
-  1) DONE ~~*Daily digest*: `--daily-digest`  
-     Show only the total times for each day, and then a whole average of that.
-     No individual sessions, session times, or messages.~~
-  2) DONE ~~*Day delimited*: `--day-delimited`  
-     Normal mixed with daily digest. Displays session times as normal, but with
-     delimeters ('===', '---', or '=-=-=') between days with total daily time at the end.~~
-  3) DONE ~~*Weekly digest*: `--weekly-digest`  
-     Show only the total times for each week, and then a whole average of that.
-     No individual days or sessions, etc.~~
-  4) DONE ~~*Week delimited*: `--week-delimited`  
-     Like day delimited, but instead of showing sessions between delimiters, it shows
-     all of the daily digests delimeted by week. Basically daily digest delimited by week.~~
