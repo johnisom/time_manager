@@ -20,9 +20,9 @@ def display_lines(lines: List[List[List[str]]],
             ((start_str, start_message),
              (stop_str, stop_message)) in zip(times, lines):
         if start_message:
-            start_message = f'-> "{start_message}"'
+            start_message = f'-> {start_message}'
         if stop_message:
-            stop_message = f'-> "{stop_message}"'
+            stop_message = f'-> {stop_message}'
 
         display_line('Start', start_str, start_message, colored)
         display_line('Stop', stop_str, stop_message, colored)
