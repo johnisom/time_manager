@@ -143,7 +143,9 @@ def convert_timeframes(timeframe_from: Union[str, None],
                        times: List[List[datetime]]) -> Tuple[int]:
     """Convert timeframes from str or None into integers."""
     if timeframe_from is None or timeframe_from == '_':
-        timeframe_from = (times[-1][0] - times[0][0]).days + 1
+        last_date = times[-1][0].date()
+        first_date = times[0][1].date()
+        timeframe_from = (last_date - first_date).days + 1
     else:
         timeframe_from = int(timeframe_from)
 
