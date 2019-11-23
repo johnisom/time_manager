@@ -80,6 +80,9 @@ Same selection but with week-delimited view option:
 
 ## TODOS
 
+* Remove the need to state name. Since this is meant for only a single person
+  (uses home directory), it doesn't make sense to require the user to enter
+  their name every they use the program.
 * Refactor viewing functions. There is a lot of reused code and it's messy,
   so lets DRY things up.
 * Port from *NIX based to cross-platform compatible (Windows/DOS and *NIX)
