@@ -44,8 +44,8 @@ Then after that alias is loaded (ex. `$ source ~/.bashrc`), you can call the
 
 ### Windows
 
-Not quite there yet. Unless you have WSL, of course. If that's the case, follow
-the above instructions from your bash terminal.
+Not quite there yet unless you have WSL. If that's the case, you can use this program
+from your wsl bash terminal and it works 100%. (After all, that's what I've been doing.)
 
 ## Dependencies
 
@@ -84,6 +84,9 @@ Same selection but with week-delimited view option:
   Fix day-delimited AND daily-digest. It is showing monday the 25 of Nov as separate days for
   each session, I assume because I didn't log any time Sunday?
   VERY IMPORTANT
+* Remove the need to state name. Since this is meant for only a single person
+  (uses home directory), it doesn't make sense to require the user to enter
+  their name every they use the program.
 * Refactor viewing functions. There is a lot of reused code and it's messy,
   so lets DRY things up.
 * Port from *NIX based to cross-platform compatible (Windows/DOS and *NIX)
