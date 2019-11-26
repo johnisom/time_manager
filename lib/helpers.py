@@ -135,7 +135,7 @@ def output_everything() -> None:
         if len(lines) <= os.get_terminal_size().lines:
             print(content, end='')
         else:
-            subprocess.run(['less', '-R'], input=less_content.encode('utf-8'))
+            subprocess.run(['less', '-RX'], input=less_content.encode('utf-8'))
 
 
 def convert_timeframes(timeframe_from: Union[str, None],
