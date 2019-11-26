@@ -80,6 +80,10 @@ Same selection but with week-delimited view option:
 
 ## TODOS
 
+* BUG:  
+  Fix day-delimited AND daily-digest. It is showing monday the 25 of Nov as separate days for
+  each session, I assume because I didn't log any time Sunday?
+  VERY IMPORTANT
 * Refactor viewing functions. There is a lot of reused code and it's messy,
   so lets DRY things up.
 * Port from *NIX based to cross-platform compatible (Windows/DOS and *NIX)
