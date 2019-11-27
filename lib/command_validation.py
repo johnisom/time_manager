@@ -16,24 +16,24 @@ def is_view(args: List[str], flags: List[str]) -> bool:
     """
     Check if valid view command.
 
-    A view command is valid if the command VIEW is supplied, 2-4 arguments
-    are supplied, and the (optional) 3rd and 4th are valid timeframe ranges.
+    A view command is valid if the command VIEW is supplied, 1-3 arguments
+    are supplied, and the (optional) 2nd and 3rd are valid timeframe ranges.
 
     Examples:
-        ['NAME', 'VIEW', 5, 2] are valid arguments for VIEW because they are
-        4 long, VIEW is supplied, and 5 days ago to 2 days ago is a valid
+        ['VIEW', 5, 2] are valid arguments for VIEW because they are
+        3 long, VIEW is supplied, and 5 days ago to 2 days ago is a valid
         range.
 
-        ['NAME', 'MESSAGE', 5, 2] are invalid arguments because VIEW is not
+        ['MESSAGE', 5, 2] are invalid arguments because VIEW is not
         supplied.
 
-        ['NAME', 'VIEW'] are valid arguments because they are 2 long and VIEW
+        ['VIEW'] are valid arguments because they are 1 long and VIEW
         is supplied.
 
-        ['NAME', 'VIEW', 3, 6] are invalid arguments because 3 days ago to 6
+        ['VIEW', 3, 6] are invalid arguments because 3 days ago to 6
         days ago is an invalid range (cannot go backwards).
 
-        ['NAME', 'VIEW', _, 3] are valid arguments only if there are more than
+        ['VIEW', _, 3] are valid arguments only if there are more than
         3 days of history becuase _ will be interpreted as the earliest day on
         record.
 
