@@ -23,10 +23,13 @@ from lib.constants import PATH_TO_DATA, PATH_TO_STDOUT, PATH_TO_TMP
 if __name__ == "__main__":
     args, flags = separate_args_and_flags(sys.argv[1:])
 
-    os.chdir(PATH_TO_DATA)
+    if not is.path.isdir(PATH_TO_DATA):
+        os.mkdir(PATH_TO_DATA)
 
     if not os.path.isdir(PATH_TO_TMP):
         os.mkdir(PATH_TO_TMP)
+
+    os.chdir(PATH_TO_DATA)
 
     sys.stdout = open(PATH_TO_STDOUT, 'w')
 
