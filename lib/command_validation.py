@@ -92,7 +92,7 @@ def is_undo(args: List[str]) -> bool:
 def is_message(args: List[str], flags: List[str]) -> bool:
     """Check if message is supplied with START/STOP command."""
 
-    return len(args) == 3 and LONG_MESSAGE_FLAG in flags
+    return len(args) == 2 and LONG_MESSAGE_FLAG in flags
 
 
 def is_good_flags(flags: List[str]) -> bool:
