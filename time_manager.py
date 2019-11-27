@@ -23,7 +23,7 @@ from lib.constants import PATH_TO_DATA, PATH_TO_STDOUT, PATH_TO_TMP
 if __name__ == "__main__":
     args, flags = separate_args_and_flags(sys.argv[1:])
 
-    if not is.path.isdir(PATH_TO_DATA):
+    if not os.path.isdir(PATH_TO_DATA):
         os.mkdir(PATH_TO_DATA)
 
     if not os.path.isdir(PATH_TO_TMP):
@@ -37,7 +37,7 @@ if __name__ == "__main__":
     if not is_valid(args, flags) or is_help(args[0]):
         display_help()
     else:
-        run(args[0], args[1], args[2:], flags)
+        run(args[0], args[1:], flags)
 
     sys.stdout.close()
     sys.stdout = sys.__stdout__

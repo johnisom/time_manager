@@ -43,13 +43,13 @@ def is_view(args: List[str], flags: List[str]) -> bool:
         return False
     if len(flags) == 2 and LONG_NOCOLOR_FLAG not in flags:
         return False
-    if len(args) >= 3:
-        if not is_valid_from(args[2]):
+    if len(args) >= 2:
+        if not is_valid_from(args[1]):
             return False
-    if len(args) == 4:
-        if not is_valid_to(args[3], args[2]):
+    if len(args) == 3:
+        if not is_valid_to(args[2], args[1]):
             return False
-    return (len(args) >= 2 and len(args) <= 4) and args[1].upper() == 'VIEW'
+    return (len(args) >= 1 and len(args) <= 3) and args[0].upper() == 'VIEW'
 
 
 def is_valid_from(arg: str) -> bool:
@@ -74,30 +74,25 @@ def is_valid_to(to_arg: str, from_arg: str) -> bool:
 
 def is_start(args: List[str], flags: List[str]) -> bool:
     """Check if valid start command."""
-    return ((is_message(args, flags) or len(args) == 2) and
-            args[1].upper() == 'START')
+    return ((is_message(args, flags) or len(args) == 1) and
+            args[0].upper() == 'START')
 
 
 def is_stop(args: List[str], flags: List[str]) -> bool:
     """Check if valid stop command."""
-    return ((is_message(args, flags) or len(args) == 2) and
-            args[1].upper() == 'STOP')
+    return ((is_message(args, flags) or len(args) == 1) and
+            args[0].upper() == 'STOP')
 
 
 def is_undo(args: List[str]) -> bool:
     """Check if valid undo command."""
-    return len(args) == 2 and args[1].upper() == 'UNDO'
+    return len(args) == 1 and args[0].upper() == 'UNDO'
 
 
 def is_message(args: List[str], flags: List[str]) -> bool:
     """Check if message is supplied with START/STOP command."""
 
     return len(args) == 3 and LONG_MESSAGE_FLAG in flags
-
-
-def is_all_alpha(name: str) -> bool:
-    """Check if name supplied is only made of letters."""
-    return all([char.isalpha() for char in name])
 
 
 def is_good_flags(flags: List[str]) -> bool:
@@ -110,4 +105,4 @@ def is_valid(args: List[str], flags: List[str]) -> bool:
     """Check if format of arguments is correct as specified in help.txt."""
     is_good_commands = (is_start(args, flags) or is_stop(args, flags) or
                         is_view(args, flags) or is_undo(args))
-    return is_good_commands and is_all_alpha(args[0]) and is_good_flags(flags)
+    return is_good_commands and is_good_flags(flags)

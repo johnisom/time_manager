@@ -10,9 +10,8 @@ from .start import start
 from .stop import stop
 
 
-def run(name: str, command: str, args: List[str], flags: List[str]) -> None:
+def run(command: str, args: List[str], flags: List[str]) -> None:
     """Run main program."""
-    name = name.upper()
     command = command.upper()
 
     # checks to see if the data file exists,
