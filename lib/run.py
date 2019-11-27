@@ -15,13 +15,6 @@ def run(name: str, command: str, args: List[str], flags: List[str]) -> None:
     name = name.upper()
     command = command.upper()
 
-    # checks to see if the directory f'{name}' exists,
-    # and if it doesn't it creates the dir
-    if not os.path.isdir(name):
-        os.mkdir(name)
-
-    os.chdir(name)
-
     # checks to see if the data file exists,
     # and if it doesn't, it creates the file
     if not os.path.isfile(FILE_DEST):

@@ -18,12 +18,12 @@ from lib.run import run
 from lib.display import display_help
 from lib.command_validation import is_valid, is_help
 from lib.helpers import output_everything, separate_args_and_flags
-from lib.constants import PATH_TO_USERS, PATH_TO_STDOUT, PATH_TO_TMP
+from lib.constants import PATH_TO_DATA, PATH_TO_STDOUT, PATH_TO_TMP
 
 if __name__ == "__main__":
     args, flags = separate_args_and_flags(sys.argv[1:])
 
-    os.chdir(PATH_TO_USERS)
+    os.chdir(PATH_TO_DATA)
 
     if not os.path.isdir(PATH_TO_TMP):
         os.mkdir(PATH_TO_TMP)
