@@ -1,11 +1,10 @@
 Usage:
-  time_manager NAME <command> <flags> [(MESSAGE) | FROM (TO)]
+  time_manager <command> <flags> [(MESSAGE) | FROM (TO)]
 
 Key: () = optional, [ | ] = one or the other
 
-Where NAME is the name of the person checking in
-and <command> is one of START, STOP, UNDO, or VIEW,
-the 4 available commands.
+Where <command> is one of START, STOP,
+UNDO, or VIEW, the 4 available commands.
 
 Flags:
   -m, --message           Allows you to pass in an optional message.
@@ -28,7 +27,7 @@ Display Option Flags:
                           Also shows total hours per week.
                           Can't be used with any other display option.
 
-Arguments are case sensitive, except for NAME and <command>
+Arguments are case sensitive, except for <command>
 
 START:
   You use this command once you have started studying.
