@@ -1,15 +1,10 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 """
 A simple CLI time manager application.
 
 See help.txt and README.md for more info.
 """
-
-# NOTE:
-# Update the above shebang if that path does not
-# exist on your system. Make sure that it points
-# to a version of python 3.6 or greater.
 
 import sys
 import os

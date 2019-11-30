@@ -49,9 +49,10 @@ from your wsl bash terminal and it works 100%. (After all, that's what I've been
 
 ## Dependencies
 
-This relies on python 3.6 or greater (uses f-strings), so make sure you have that installed.
-Also, if you dont have the path `/usr/bin/python3`, update the shebang at the top of
-`~/time_manager/time_manager.py` from `#!/usr/bin/python3` to `#!/your/path/to/python/3.6/or/greater`.
+This relies on python 3.6 or greater (uses f-strings), so make sure you have that installed
+and accessible with the `/usr/bin/env python3` command. If you install python3, it
+should automatically put that environment variable in, whether its standard Python,
+Anaconda, or something else.
 
 ## Example Usage
 
