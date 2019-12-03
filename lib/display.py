@@ -1,7 +1,7 @@
 from typing import List, Optional
 from datetime import datetime
 import os
-
+import sys
 
 from .constants import SEC_IN_MIN, SEC_IN_HOUR, PATH_TO_HELP, colors
 
@@ -81,4 +81,4 @@ def display_help() -> None:
 
 def print_error(msg: str) -> None:
     """Print message as an error."""
-    print(f'{colors.FG.RED}{msg}{colors.RESET}')
+    print(f'{colors.FG.RED}{msg}{colors.RESET}', file=sys.stderr)
