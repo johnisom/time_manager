@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from typing import List, Union, Tuple
 import os
 import subprocess
+import math
 
 
 from .constants import (FORBIDDEN, FILE_DEST, EOL, DELIMETER, FLAGS,
@@ -132,7 +133,12 @@ def output_everything() -> None:
         lines = stdout.readlines()
         less_content = '\n  ' + '  '.join(lines)
         content = ''.join(lines)
-        if len(lines) <= os.get_terminal_size().lines:
+        try:
+            term_lines = os.get_terminal_size().lines
+        except OSError:
+            term_lines = math.inf
+
+        if len(lines) <= term_lines:
             print(content, end='')
         else:
             subprocess.run(['less', '-RX'], input=less_content.encode('utf-8'))
