@@ -107,4 +107,4 @@ Same selection but with week-delimited view option:
 * Add categories of what your time is going to, like coding, working out,
   reading, etc. Will require overhaul of all data structures and processes.
   Very low priority.
-* Add an "edit" command to reset the most recent 'start' time by passing in a string of form hh:mm, either military time or AM/PM. Bonus would be to also give the option of doing +/- a # of minutes e.g. "+5".
+* Add an "edit" command to reset the most recent 'start' time by passing in a string of form hh:mm:ss military time. Bonus would be to also give the option of doing +/- a # of minutes e.g. "+5".
