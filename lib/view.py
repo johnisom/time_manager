@@ -126,13 +126,16 @@ def day_delimited(timeframe_from: int, timeframe_to: int,
     beg_date = times[0][0].date()
     day = 0
     for time, line in zip(times, lines):
-        if (time[1].date() - beg_date).days != day:
-            day += 1
+        day = (time[1].date() - beg_date).days
         day_times[day].append(time)
         day_lines[day].append(line)
 
     daily_totals = [sum([(stop - start).seconds for start, stop in times])
                     for times in day_times]
+
+    daily_totals = list(filter(lambda time: time != 0, daily_totals))
+    day_times = list(filter(lambda lst: lst, day_times))
+    day_lines = list(filter(lambda lst: lst, day_lines))
 
     if colored:
         print(f'Chosen display: {colors.FG.BRIGHT.RED}'
