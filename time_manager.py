@@ -3,7 +3,7 @@
 """
 A simple CLI time manager application.
 
-See help.txt and README.md for more info.
+See HELP.txt and README.md for more info.
 """
 
 import sys
