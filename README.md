@@ -95,10 +95,10 @@ Same selection but with week-delimited view option:
 
 ## TODOS
 
-* BUG:  
+* ~~BUG:  
   Fix day-delimited AND daily-digest. It is showing monday the 25 of Nov as separate days for
   each session, I assume because I didn't log any time Sunday?
-  VERY IMPORTANT
+  VERY IMPORTANT~~ FIXED
 * Make week by week use like my website version does and chunk. Can get week
   in year with `int(a_datetime_instance.strftime('%V'))`.
 * Refactor viewing functions. There is a lot of reused code and it's messy,
