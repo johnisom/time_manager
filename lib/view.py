@@ -83,11 +83,16 @@ def daily_digest(timeframe_from: int, timeframe_to: int,
     beg_date = times[0][0].date()
     day = 0
     for start, stop in times:
-        if (stop.date() - beg_date).days != day:
+        date_diff = (stop.date() - beg_date).days
+        if date_diff != day:
             dates.append(stop)
-            day += 1
-        daily_times[day] += (stop - start).seconds
+            day = date_diff
 
+        sec_diff = (stop - start).seconds
+        if sec_diff != 0:
+            daily_times[day] += sec_diff
+
+    daily_times = list(filter(lambda time: time != 0, daily_times))
     total_seconds = sum(daily_times)
     average_seconds = total_seconds // (timeframe_from - timeframe_to)
 
@@ -104,6 +109,8 @@ def daily_digest(timeframe_from: int, timeframe_to: int,
 
     display_summary('\nAverage', average_seconds, colored, ' per day')
     display_summary('Total', total_seconds, colored)
+    print(dates, daily_times)
+    print(len(dates), len(daily_times))
 
 
 def day_delimited(timeframe_from: int, timeframe_to: int,
