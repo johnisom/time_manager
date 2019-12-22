@@ -134,23 +134,22 @@ def parse_edit_args(args: List[str], flags: List[str]) -> Tuple[Union[str, int, 
         colored = False
         flags.remove(LONG_NOCOLOR_FLAG)
 
-    if len(flags) == 1 and args:
+    if len(flags) == 1 and not args and flags[0] not in FLAGS.values():
+        mins = flags[0]
+    elif len(flags) == 1 and args:
         if LONG_MESSAGE_FLAG in flags:
             message = args[0]
-        elif flags[0].startswith(('-', '+')):
-            mins = flags[0]
         elif LONG_TIME_FLAG in flags:
             time = args[0]
     elif len(flags) == 2 and args:
         if LONG_TIME_FLAG in flags:
             time_idx = flags.index(LONG_TIME_FLAG)
+            print(f'time_idx={time_idx}')
             time = args[time_idx]
             message = args[time_idx - 1]
-            pass
         else:
             mins = flags[flags.index(LONG_MESSAGE_FLAG) - 1]
             message = args[0]
-
 
     return message, time, mins, colored
 
