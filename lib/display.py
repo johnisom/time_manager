@@ -38,7 +38,7 @@ def display_line(title: str, time: str, message: str, colored: bool) -> None:
               f'{colors.FG.BRIGHT.CYA}{message}'
               f'{colors.RESET}')
     else:
-        print(f'{title}: {time}{message}')
+        print(f'{title}: {time} {message}')
 
 
 def display_summary(title: str, total_seconds: int, colored: bool,
