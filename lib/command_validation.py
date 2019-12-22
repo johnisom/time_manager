@@ -1,7 +1,7 @@
 from typing import List
 
 from .constants import (FLAGS, LONG_MESSAGE_FLAG, LONG_NOCOLOR_FLAG,
-                        VIEW_OPTION_FLAGS)
+                        LONG_TIME_FLAG, VIEW_OPTION_FLAGS)
 
 
 def is_help(arg: str) -> bool:
@@ -89,20 +89,36 @@ def is_undo(args: List[str]) -> bool:
     return len(args) == 1 and args[0].upper() == 'UNDO'
 
 
+def is_edit(args: List[str], flags: List[str]) -> bool:
+    """Check if valid edit command."""
+    if len(flags) > 3:
+        return False
+    if len(flags) == 3 and (LONG_MESSAGE_FLAG not in flags or
+                            LONG_NOCOLOR_FLAG not in flags):
+        return False
+    if len(args) > 3:
+        return False
+    return len(args) + len(flags) > 1 and args[0].upper() == 'EDIT'
+
+
 def is_message(args: List[str], flags: List[str]) -> bool:
     """Check if message is supplied with START/STOP command."""
-
     return len(args) == 2 and LONG_MESSAGE_FLAG in flags
 
 
+# TODO: make it so this will accept -4 and +4 mins flags.
 def is_good_flags(flags: List[str]) -> bool:
     """Check if all flags are known to program."""
     acceptable = set(FLAGS.values())
-    return acceptable.issuperset(flags)
+    is_plus_minus_mins = any([flag[0:2] != '--'
+                              and str(int(flag[1:])) == flag[1:]
+                              for flag in flags])
+    return acceptable.issuperset(flags) or is_plus_minus_mins
 
 
 def is_valid(args: List[str], flags: List[str]) -> bool:
     """Check if format of arguments is correct as specified in help.txt."""
     is_good_commands = (is_start(args, flags) or is_stop(args, flags) or
-                        is_view(args, flags) or is_undo(args))
+                        is_view(args, flags) or is_undo(args) or
+                        is_edit(args, flags))
     return is_good_commands and is_good_flags(flags)

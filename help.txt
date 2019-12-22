@@ -1,5 +1,5 @@
 Usage:
-  time_manager <command> <flags> [(TIME) | (MINS)] [(MESSAGE) | FROM (TO)]
+  time_manager <command> <flags> ([TIME | MESSAGE]) [(MESSAGE) | FROM (TO)]
 
 Key: () = optional, [ | ] = one or the other
 

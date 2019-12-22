@@ -3,7 +3,7 @@ from typing import List
 
 
 from .constants import FILE_DEST, DELIMETER, EOL
-from .helpers import (write, parse_args, parse_start_stop_args,
+from .helpers import (write, parse_start_stop_args,
                       parse_undo_args, parse_edit_args, parse_view_args)
 from .view import view
 from .undo import undo
