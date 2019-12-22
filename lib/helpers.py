@@ -144,7 +144,6 @@ def parse_edit_args(args: List[str], flags: List[str]) -> Tuple[Union[str, int, 
     elif len(flags) == 2 and args:
         if LONG_TIME_FLAG in flags:
             time_idx = flags.index(LONG_TIME_FLAG)
-            print(f'time_idx={time_idx}')
             time = args[time_idx]
             message = args[time_idx - 1]
         else:

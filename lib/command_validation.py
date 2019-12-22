@@ -1,7 +1,7 @@
 from typing import List
 
 from .constants import (FLAGS, LONG_MESSAGE_FLAG, LONG_NOCOLOR_FLAG,
-                        LONG_TIME_FLAG, VIEW_OPTION_FLAGS)
+                        LONG_TIME_FLAG)
 
 
 def is_help(arg: str) -> bool:
