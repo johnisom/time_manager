@@ -8,7 +8,7 @@ import math
 from .constants import (FORBIDDEN, FILE_DEST, EOL, DELIMETER, FLAGS,
                         MESSAGE_DELIM, DELIM_REPLACEMENT, PATH_TO_STDOUT,
                         TIME_FORMAT_PATTERN, LONG_NOCOLOR_FLAG,
-                        LONG_MESSAGE_FLAG)
+                        LONG_MESSAGE_FLAG, LONG_TIME_FLAG)
 
 
 def sanitize(text: str) -> str:
@@ -100,13 +100,72 @@ def last_start(line: str) -> bool:
     return line[-1] == DELIMETER
 
 
-def parse_args(args: List[str], flags: List[str]) -> Tuple[Union[str, None]]:
+def parse_start_stop_args(args: List[str], flags: List[str]) -> Tuple[str, bool]:
+    message = ''
+    colored = True
+
+    if LONG_NOCOLOR_FLAG in flags:
+        colored = False
+    if args:
+        message = args[0]
+
+    return message, colored
+
+
+def parse_undo_args(args: List[str], flags: List[str]) -> Tuple[bool]:
+    colored = True
+
+    if LONG_NOCOLOR_FLAG in flags:
+        colored = False
+
+    return colored,
+
+
+def parse_edit_args(args: List[str], flags: List[str]) -> Tuple[Union[str, int, bool, None]]:
+    message = None
+    colored = True
+    time = None
+    mins = None
+
+    if LONG_NOCOLOR_FLAG in flags:
+        colored = False
+
+    
+
+    return message, time, mins, colored
+
+
+def parse_view_args(args: List[str], flags: List[str]) -> Tuple[Union[str, bool, None]]:
+    timeframe_from = None
+    timeframe_to = None
+    colored = True
+    view_option = 'default'
+
+    if LONG_NOCOLOR_FLAG in flags:
+        colored = False
+
+    if len(args) == 1:
+        timeframe_from = args[0]
+    elif len(args) == 2:
+        timeframe_from = args[0]
+        timeframe_to = args[1]
+
+    if flags and LONG_NOCOLOR_FLAG not in flags:
+        view_option = flags[0].strip('-')
+    elif len(flags) > 1 and LONG_NOCOLOR_FLAG in flags:
+        view_option = flags[flags.index(LONG_NOCOLOR_FLAG) - 1].strip('-')
+
+    return timeframe_from, timeframe_to, view_option, colored
+
+def parse_args(args: List[str], flags: List[str]) -> Tuple:
     """Parse/split a list of arguments into their components."""
     timeframe_from = None
     timeframe_to = None
-    message = ''
+    message = None
     colored = True
     view_option = "default"
+    mins = None
+    time = None
 
     if LONG_NOCOLOR_FLAG in flags:
         colored = False
