@@ -49,40 +49,37 @@ FLAGS = {
     SHORT_WEEK_DELIMITED_FLAG: LONG_WEEK_DELIMITED_FLAG
 }
 
-VIEW_OPTION_FLAGS = {LONG_DAILY_DIGEST_FLAG, LONG_DAY_DELIMITED_FLAG,
-                     LONG_WEEKLY_DIGEST_FLAG, LONG_WEEK_DELIMITED_FLAG}
-
 
 class colors:
 
-    RESET = '\u001b[0m'
+    RESET = '\x1b[0m'
 
     class FG:
-        BLK = '\u001b[30m'
-        RED = '\u001b[31m'
-        GRN = '\u001b[32m'
-        YEL = '\u001b[33m'
-        BLU = '\u001b[34m'
-        MAG = '\u001b[35m'
-        CYA = '\u001b[36m'
-        WHI = '\u001b[37m'
+        BLK = '\x1b[30m'
+        RED = '\x1b[31m'
+        GRN = '\x1b[32m'
+        YEL = '\x1b[33m'
+        BLU = '\x1b[34m'
+        MAG = '\x1b[35m'
+        CYA = '\x1b[36m'
+        WHI = '\x1b[37m'
 
         class BRIGHT:
-            BLK = '\u001b[30;1m'
-            RED = '\u001b[31;1m'
-            GRN = '\u001b[32;1m'
-            YEL = '\u001b[33;1m'
-            BLU = '\u001b[34;1m'
-            MAG = '\u001b[35;1m'
-            CYA = '\u001b[36;1m'
-            WHI = '\u001b[37;1m'
+            BLK = '\x1b[30;1m'
+            RED = '\x1b[31;1m'
+            GRN = '\x1b[32;1m'
+            YEL = '\x1b[33;1m'
+            BLU = '\x1b[34;1m'
+            MAG = '\x1b[35;1m'
+            CYA = '\x1b[36;1m'
+            WHI = '\x1b[37;1m'
 
     class BG:
-        BLK = '\u001b[40m'
-        RED = '\u001b[41m'
-        GRN = '\u001b[42m'
-        YEL = '\u001b[43m'
-        BLU = '\u001b[44m'
-        MAG = '\u001b[45m'
-        CYA = '\u001b[46m'
-        WHI = '\u001b[47m'
+        BLK = '\x1b[40m'
+        RED = '\x1b[41m'
+        GRN = '\x1b[42m'
+        YEL = '\x1b[43m'
+        BLU = '\x1b[44m'
+        MAG = '\x1b[45m'
+        CYA = '\x1b[46m'
+        WHI = '\x1b[47m'
