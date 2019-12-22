@@ -1,10 +1,10 @@
 Usage:
-  time_manager <command> <flags> [(MESSAGE) | FROM (TO)]
+  time_manager <command> <flags> ([TIME | MESSAGE]) [(MESSAGE) | FROM (TO)]
 
 Key: () = optional, [ | ] = one or the other
 
 Where <command> is one of START, STOP,
-UNDO, or VIEW, the 4 available commands.
+UNDO, EDIT, or VIEW, the 5 available commands.
 
 Flags:
   -m, --message           Allows you to pass in an optional message.
@@ -12,18 +12,29 @@ Flags:
 
   -nc, --nocolor          Turns off default coloring of output.
 
+  -t, --time              Used with EDIT to specify the time to set on the
+                          most recent start or stop.
+
+  -<mins>, +<mins>        Used with EDIT to specify by how many minutes to
+                          adjust the most recent start or stop.
+
+
 Display Option Flags:
-  -d, --daily-digest      Show only total hours per day without individual sessions.
+  -d, --daily-digest      Show only total hours per day without individual
+                          sessions.
                           Can't be used with any other display option.
 
-  -dd, --day-delimited    Show all session times but have each day visually separated/delimited.
+  -dd, --day-delimited    Show all session times but have each day visually
+                          separated/delimited.
                           Also shows total hours per day.
                           Can't be used with any other display option.
 
-  -w, --weekly-digest     Show only total hours per week without individual sessions or days.
+  -w, --weekly-digest     Show only total hours per week without individual
+                          sessions or days.
                           Can't be used with any other display option.
 
-  -wd, --week-delimited   Daily digest but have each week visually separated/delimited.
+  -wd, --week-delimited   Daily digest but have each week visually
+                          separated/delimited.
                           Also shows total hours per week.
                           Can't be used with any other display option.
 
@@ -45,6 +56,25 @@ STOP:
 
 UNDO:
   You use this command to undo a previous START or STOP.
+
+EDIT:
+  You use this command to edit a previous START or STOP.
+
+  MESSAGE (with -m/--message flag):
+    Replace the message/note from the previous START or STOP.
+
+  TIME (with -t/--time flag):
+    Replace the time from the previous START or STOP.
+    Must be in HH:MM:SS format without AM/PM or timezone.
+
+  MINS (with +<mins>/-<mins> flag):
+    Edit the time from the previous START or STOP by adding or subtracting
+    a specified number of minutes.
+    <mins> must be an integer.
+    -<mins> means further into the past, while +<mins> means closer to the
+    present or farther into the future.
+    For example, if the previous time was 11:30:00, +5 would edit it to
+    11:35:00, and -5 to 11:25:00.
 
 VIEW:
   You use this command to view the times and stats of

@@ -8,7 +8,7 @@ import math
 from .constants import (FORBIDDEN, FILE_DEST, EOL, DELIMETER, FLAGS,
                         MESSAGE_DELIM, DELIM_REPLACEMENT, PATH_TO_STDOUT,
                         TIME_FORMAT_PATTERN, LONG_NOCOLOR_FLAG,
-                        LONG_MESSAGE_FLAG)
+                        LONG_MESSAGE_FLAG, LONG_TIME_FLAG)
 
 
 def sanitize(text: str) -> str:
@@ -100,20 +100,71 @@ def last_start(line: str) -> bool:
     return line[-1] == DELIMETER
 
 
-def parse_args(args: List[str], flags: List[str]) -> Tuple[Union[str, None]]:
+def parse_start_stop_args(args: List[str], flags: List[str]) -> Tuple[str, bool]:
     """Parse/split a list of arguments into their components."""
-    timeframe_from = None
-    timeframe_to = None
     message = ''
     colored = True
-    view_option = "default"
+
+    if LONG_NOCOLOR_FLAG in flags:
+        colored = False
+    if args:
+        message = args[0]
+
+    return message, colored
+
+
+def parse_undo_args(args: List[str], flags: List[str]) -> Tuple[bool]:
+    """Parse/split a list of arguments into their components."""
+    colored = True
 
     if LONG_NOCOLOR_FLAG in flags:
         colored = False
 
-    if len(args) == 1 and LONG_MESSAGE_FLAG in flags:
-        message = args[0]
-    elif len(args) == 1 and LONG_MESSAGE_FLAG not in flags:
+    return colored,
+
+
+def parse_edit_args(args: List[str], flags: List[str]) -> Tuple[Union[str, int, bool, None]]:
+    """Parse/split a list of arguments into their components."""
+    message = None
+    colored = True
+    time = None
+    mins = None
+
+    if LONG_NOCOLOR_FLAG in flags:
+        colored = False
+        flags.remove(LONG_NOCOLOR_FLAG)
+
+    if len(flags) == 1 and not args and flags[0] not in FLAGS.values():
+        mins = flags[0]
+    elif len(flags) == 1 and args:
+        if LONG_MESSAGE_FLAG in flags:
+            message = args[0]
+        elif LONG_TIME_FLAG in flags:
+            time = args[0]
+    elif len(flags) == 2 and args:
+        if LONG_TIME_FLAG in flags:
+            time_idx = flags.index(LONG_TIME_FLAG)
+            print(f'time_idx={time_idx}')
+            time = args[time_idx]
+            message = args[time_idx - 1]
+        else:
+            mins = flags[flags.index(LONG_MESSAGE_FLAG) - 1]
+            message = args[0]
+
+    return message, time, mins, colored
+
+
+def parse_view_args(args: List[str], flags: List[str]) -> Tuple[Union[str, bool, None]]:
+    """Parse/split a list of arguments into their components."""
+    timeframe_from = None
+    timeframe_to = None
+    colored = True
+    view_option = 'default'
+
+    if LONG_NOCOLOR_FLAG in flags:
+        colored = False
+
+    if len(args) == 1:
         timeframe_from = args[0]
     elif len(args) == 2:
         timeframe_from = args[0]
@@ -124,7 +175,7 @@ def parse_args(args: List[str], flags: List[str]) -> Tuple[Union[str, None]]:
     elif len(flags) > 1 and LONG_NOCOLOR_FLAG in flags:
         view_option = flags[flags.index(LONG_NOCOLOR_FLAG) - 1].strip('-')
 
-    return timeframe_from, timeframe_to, message, view_option, colored
+    return timeframe_from, timeframe_to, view_option, colored
 
 
 def output_everything() -> None:
@@ -168,7 +219,9 @@ def separate_args_and_flags(sys_args: List[str]) -> Tuple[List[str]]:
         if sys_arg.startswith('--'):
             flags.append(sys_arg)
         elif sys_arg.startswith('-'):
-            flags.append(FLAGS.get(sys_arg))
+            flags.append(FLAGS.get(sys_arg, sys_arg))
+        elif sys_arg.startswith('+'):
+            flags.append(sys_arg)
         else:
             args.append(sys_arg)
 
