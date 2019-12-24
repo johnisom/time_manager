@@ -17,7 +17,7 @@ EOL = '\n'
 
 FORBIDDEN = [DELIMETER, MESSAGE_DELIM, EOL]
 
-PATH_TO_HELP = os.environ['HOME'] + '/time_manager/help.txt'
+PATH_TO_HELP = os.environ['HOME'] + '/time_manager/HELP.txt'
 PATH_TO_STDOUT = os.environ['HOME'] + '/time_manager/tmp/stdout.txt'
 PATH_TO_TMP = os.environ['HOME'] + '/time_manager/tmp'
 PATH_TO_DATA = os.environ['HOME'] + '/time_manager/data'
