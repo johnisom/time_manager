@@ -109,8 +109,6 @@ def daily_digest(timeframe_from: int, timeframe_to: int,
 
     display_summary('\nAverage', average_seconds, colored, ' per day')
     display_summary('Total', total_seconds, colored)
-    print(dates, daily_times)
-    print(len(dates), len(daily_times))
 
 
 def day_delimited(timeframe_from: int, timeframe_to: int,
