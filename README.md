@@ -104,6 +104,9 @@ Same selection but with week-delimited view option:
 * Refactor viewing functions. There is a lot of reused code and it's messy,
   so lets DRY things up.
 * Port from *NIX based to cross-platform compatible (Windows/DOS and *NIX)
+* Allow time to be passed in as a start/stop parameter in the form of a time
+  flag (`--time HH:MM:SS` or `-t HH:MM:SS`) in a similar way as in the "edit"
+  command.
 * Add categories of what your time is going to, like coding, working out,
   reading, etc. Will require overhaul of all data structures and processes.
   Very low priority.
