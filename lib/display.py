@@ -12,17 +12,17 @@ def display_lines(lines: List[List[List[str]]],
     Display start times, stop times, messages, and session times.
 
     Follows this format:
-        Start: timestamp( -> "message")
-        Stop: timestamp( -> "message")
+        Start: timestamp[ → "message"]
+        Stop: timestamp[ → "message"]
         Session time: hour:min:sec
     """
     for (start_time, stop_time),\
             ((start_str, start_message),
              (stop_str, stop_message)) in zip(times, lines):
         if start_message:
-            start_message = f'-> {start_message}'
+            start_message = f'→ {start_message}'
         if stop_message:
-            stop_message = f'-> {stop_message}'
+            stop_message = f'→ {stop_message}'
 
         display_line('Start', start_str, start_message, colored)
         display_line('Stop', stop_str, stop_message, colored)
