@@ -17,7 +17,7 @@ __Check out [HELP.txt](HELP.txt) for help.__
 
 ## Installation
 
-### MacOS/Linux
+### MacOS and GNU/Linux
 
 In your home directory, clone this repo into it like so:
 
